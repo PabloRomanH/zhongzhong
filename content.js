@@ -957,7 +957,10 @@ var zhongwenContent = {
                 pinyinClass += '-small';
             }
             var p = this.pinyinAndZhuyin(e[3], showToneColors, pinyinClass);
-            html += p[0];
+
+            if (window.zhongwen.config.pinyin == 'yes') {
+                html += p[0];
+            }
 
             // Zhuyin
 
