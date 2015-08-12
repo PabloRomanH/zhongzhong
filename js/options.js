@@ -1,7 +1,7 @@
 /*
-        Zhongwen - A Chinese-English Popup Dictionary
-        Copyright (C) 2012 Christian Schiller
-        https://chrome.google.com/extensions/detail/kkmlkkjojmombglmlpbpapmhcaljjkde
+        Zhongzhong - A Chinese-English Popup Dictionary
+        Copyright (C) 2015 Pablo Roman
+        https://chrome.google.com/webstore/detail/dggcgdjndddfmcfoipccicfoajmciacf
 */
 
 function loadVals() {
@@ -36,7 +36,7 @@ function loadVals() {
     else {
         document.optform.skritterTLD[0].selected = true;
     }
-        
+
     storedValue = localStorage['zhuyin'];
     if(storedValue == 'yes') {
         document.optform.zhuyin[1].selected = true;
@@ -79,4 +79,3 @@ $(function() {
 });
 
 window.onload = loadVals;
-

@@ -1,5 +1,11 @@
 /*
-        Zhongwen - A Chinese-English Popup Dictionary
+        Zhongzhong - A Chinese-English Popup Dictionary
+        Copyright (C) 2015 Pablo Roman
+        https://chrome.google.com/webstore/detail/dggcgdjndddfmcfoipccicfoajmciacf
+
+        ---
+
+        Originally based on Zhongwen 4.0.1
         Copyright (C) 2011 Christian Schiller
         https://chrome.google.com/extensions/detail/kkmlkkjojmombglmlpbpapmhcaljjkde
 
@@ -67,7 +73,7 @@ var zhongwenContent = {
             document.addEventListener('DOMNodeInserted', this.onDOMNodeInserted)
         }
     },
-    
+
     onDOMNodeInserted: function(ev) {
         if (ev.target.nodeName == 'IFRAME') {
             chrome.extension.sendRequest({
@@ -362,7 +368,7 @@ var zhongwenContent = {
                 break;
 
             case 82:        // r
-                
+
                 var entries = [];
                 for (var j = 0; j < this.lastFound.length; j++) {
                     var entry = {};
@@ -372,21 +378,21 @@ var zhongwenContent = {
                     entry.definition = this.lastFound[j][3];
                     entries.push(entry);
                 }
-                
+
                 chrome.extension.sendRequest({
                     "type": "add",
                     "entries": entries
                 });
-                
+
                 this.showPopup("Added to word list.<p>Press Alt+W to open word list.", null, -1, -1);
 
                 break;
-                
+
             case 83:        // s
                 if (this.isVisible()) {
 
                     // http://www.skritter.com/vocab/api/add?from=Chrome&lang=zh&word=浏览&trad=瀏 覽&rdng=liú lǎn&defn=to skim over; to browse
-                
+
                     var skritter = 'http://www.skritter.com';
                     if (window.zhongwen.config.skritterTLD == 'cn') {
                         skritter = 'http://www.skritter.cn';
@@ -750,9 +756,9 @@ var zhongwenContent = {
 
     makeDiv: function(input) {
         var div = document.createElement('div');
-        
+
         div.id = '_zhongwenDiv';
-        
+
         var text;
         if (input.value) {
             text = input.value;
@@ -770,10 +776,10 @@ var zhongwenContent = {
         div.style.position = "absolute";
         div.style.zIndex = 7000;
         $(div).offset({
-            top: $(input).offset().top, 
+            top: $(input).offset().top,
             left: $(input).offset().left
         })
-		
+
         return div;
     },
 
@@ -790,23 +796,23 @@ var zhongwenContent = {
             var div = document.getElementById('_zhongwenDiv');
 
             if (ev.altKey) {
-                
+
                 if (!div && (ev.target.nodeName == 'TEXTAREA' || ev.target.nodeName == 'INPUT' ||
                     ev.target.nodeName == 'IFRAME')) {
-                
+
                     div = zhongwenContent.makeDiv(ev.target);
                     document.body.appendChild(div);
                     div.scrollTop = ev.target.scrollTop;
                     div.scrollLeft = ev.target.scrollLeft;
-                
+
                 }
-                
+
             } else {
-                
+
                 if (div) {
                     document.body.removeChild(div);
                 }
-                
+
             }
 
         }
@@ -836,7 +842,7 @@ var zhongwenContent = {
             rp = this.findNextTextNode(rp.parentNode, rp);
             ro = 0;
         }
-        
+
         // The case where the text before div is empty.
         if(rp && rp.parentNode != ev.target) {
             rp = zhongwenContent.findNextTextNode(rp.parentNode, rp);
@@ -1049,14 +1055,14 @@ var zhongwenContent = {
         var a = syllables.split(/\s/);
         for (var i = 0; i < a.length; i++) {
             var syllable = a[i];
-            
+
             // ',' in pinyin
             if (syllable == ',') {
                 html += ' ,';
                 text += ' ,';
                 continue;
             }
-            
+
             if (i > 0) {
                 html += '&nbsp;';
                 text += ' ';
@@ -1090,21 +1096,21 @@ var zhongwenContent = {
             html += m[1] + t[0] + m[3];
             html += '</span>';
             text += m[1] + t[1] + m[3];
-            
+
             var zhuyinClass = 'w-zhuyin';
             if (window.zhongwen.config.fontSize == 'small') {
                 zhuyinClass += '-small';
             }
-            
-            zhuyin += '<span class="tone' + m[4] + ' ' + zhuyinClass + '">' 
-            + this.zhuyinMap[syllable.substring(0, syllable.length -1).toLowerCase()] 
+
+            zhuyin += '<span class="tone' + m[4] + ' ' + zhuyinClass + '">'
+            + this.zhuyinMap[syllable.substring(0, syllable.length -1).toLowerCase()]
             + this.zhuyinTones[syllable[syllable.length - 1]] + '</span>'
         }
         return [html, text, zhuyin]
     },
-    
+
     zhuyinTones : ['?', '', '\u02CA', '\u02C7', '\u02CB', '\u30FB'],
-    
+
     zhuyinMap : {
         'a': '\u311a',
         'ai': '\u311e',
@@ -1531,7 +1537,7 @@ chrome.extension.onRequest.addListener(
                 zhongwenContent.disableTab();
                 break;
             case 'showPopup':
-                if (!request.isHelp || window == window.top) { 
+                if (!request.isHelp || window == window.top) {
                     zhongwenContent.showPopup(request.text);
                 }
                 break;

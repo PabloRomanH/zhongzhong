@@ -3,8 +3,8 @@
       "scripts": [ "dict.js", "main.js", "background.js" ]
    },
    "browser_action": {
-      "default_icon": "images/zhongwen48.png",
-      "default_title": "Zhongwen Chinese Popup Dictionary"
+      "default_icon": "images/zhongzhong48.png",
+      "default_title": "Zhongzhong Chinese Popup Dictionary"
    },
    "content_scripts": [ {
       "all_frames": true,
@@ -13,16 +13,15 @@
    } ],
    "description": "Chinese popup translator. Great tool for learning Chinese. Supports adding words to Skritter.",
    "icons": {
-      "128": "images/zhongwen.png",
-      "16": "images/zhongwen16.png",
-      "48": "images/zhongwen48.png"
+      "128": "images/zhongzhong.png",
+      "16": "images/zhongzhong16.png",
+      "48": "images/zhongzhong48.png"
    },
-   "key": "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC9kqvX6bQ05nYOOB67oitnTW6arQZbq/nLebcs8f2jwXM7cvZrkNaMtZroysYtDPFIES7yP4/SAsVP4CGKP7z/2o8/BBkqe+8+4Okk5bo23ovpGVSqGlpE63Q58Zkpl6j/GcVpHAlE5thNH7QmBjcAH5ESdt/o2iJaYDbImwthDwIDAQAB",
    "manifest_version": 2,
-   "name": "Zhongwen: A Chinese-English Popup Dictionary",
+   "name": "Zhongzhong: An improved Chinese Dictionary",
    "options_page": "options.html",
    "permissions": [ "tabs", "http://*/*", "https://*/*", "contextMenus" ],
    "update_url": "https://clients2.google.com/service/update2/crx",
-   "version": "4.0.1",
+   "version": "1.0.0",
    "web_accessible_resources": [ "css/*", "js/*", "images/*" ]
 }

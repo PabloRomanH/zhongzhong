@@ -1,7 +1,7 @@
 /*
-        Zhongwen - A Chinese-English Popup Dictionary
-        Copyright (C) 2012 Christian Schiller
-        https://chrome.google.com/extensions/detail/kkmlkkjojmombglmlpbpapmhcaljjkde
+        Zhongzhong - A Chinese-English Popup Dictionary
+        Copyright (C) 2015 Pablo Roman
+        https://chrome.google.com/webstore/detail/dggcgdjndddfmcfoipccicfoajmciacf
 */
 
 chrome.browserAction.onClicked.addListener(zhongwenMain.enableToggle);
@@ -18,7 +18,7 @@ chrome.extension.onRequest.addListener(function(request, sender, response) {
             response(e);
             break;
         case 'open':
-                        
+
             var tabID = zhongwenMain.tabIDs[request.tabType];
             if (tabID) {
                 chrome.tabs.get(tabID, function(tab) {
@@ -50,7 +50,7 @@ chrome.extension.onRequest.addListener(function(request, sender, response) {
                     }
                 });
             }
-                        
+
             break;
 
         case 'copy':
@@ -65,24 +65,24 @@ chrome.extension.onRequest.addListener(function(request, sender, response) {
             break;
         case 'add':
             var json = localStorage['wordlist'];
-                        
+
             var wordlist;
             if (json) {
                 wordlist = JSON.parse(json);
             } else {
                 wordlist = []
             }
-                        
+
             for (var i in request.entries) {
-                            
+
                 var entry = {}
                 entry.simplified = request.entries[i].simplified;
                 entry.traditional = request.entries[i].traditional;
                 entry.pinyin = request.entries[i].pinyin;
                 entry.definition = request.entries[i].definition;
-                            
+
                 wordlist.push(entry);
-            }                            
+            }
             localStorage['wordlist'] = JSON.stringify(wordlist);
 
             var tabID = zhongwenMain.tabIDs['wordlist'];

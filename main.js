@@ -1,5 +1,11 @@
 /*
-        Zhongwen - A Chinese-English Popup Dictionary
+        Zhongzhong - A Chinese-English Popup Dictionary
+        Copyright (C) 2015 Pablo Roman
+        https://chrome.google.com/webstore/detail/dggcgdjndddfmcfoipccicfoajmciacf
+
+        ---
+
+        Originally based on Zhongwen 4.0.1
         Copyright (C) 2011 Christian Schiller
         https://chrome.google.com/extensions/detail/kkmlkkjojmombglmlpbpapmhcaljjkde
 
@@ -51,10 +57,10 @@ var zhongwenMain = {
     tabIDs: {},
 
     miniHelp:
-    '<span style="font-weight: bold;">Zhongwen Chinese-English Dictionary&nbsp;&nbsp;&nbsp;</span><br><br>' +
+    '<span style="font-weight: bold;">Zhongzhong Chinese-English Dictionary&nbsp;&nbsp;&nbsp;</span><br><br>' +
     '<p>' +
-    '<span style="font-style: italic; font-weight: bold;">New: </span>' + 
-    '<span style="font-style: italic;">In order to make Zhongwen work in input fields and text areas,<br>' + 
+    '<span style="font-style: italic; font-weight: bold;">New: </span>' +
+    '<span style="font-style: italic;">In order to make Zhongzhong work in input fields and text areas,<br>' +
     ' hold down the Alt-key on your keyboard.</span><br><br>' +
     '<p>' +
     'Keyboard shortcuts:' +
@@ -137,11 +143,11 @@ var zhongwenMain = {
         chrome.browserAction.setBadgeBackgroundColor({
             "color": [255, 0, 0, 255]
         });
-        
+
         chrome.browserAction.setBadgeText({
             "text": "On"
         });
-        
+
         chrome.contextMenus.create(
         {
             title: "Open word list",
@@ -206,7 +212,7 @@ var zhongwenMain = {
                 }
             }
         });
-        
+
         chrome.contextMenus.removeAll();
     },
 
