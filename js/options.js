@@ -45,6 +45,14 @@ function loadVals() {
         document.optform.zhuyin[0].selected = true;
     }
 
+    storedValue = localStorage['pinyin'];
+    if(storedValue == 'yes') {
+        document.optform.pinyin[1].selected = true;
+    }
+    else {
+        document.optform.pinyin[0].selected = true;
+    }
+
     storedValue = localStorage['grammar'];
     if(storedValue == 'no') {
         document.optform.grammar[1].selected = true;
@@ -69,6 +77,9 @@ function storeVals() {
 
     localStorage['zhuyin'] = document.optform.zhuyin.value;
     chrome.extension.getBackgroundPage().zhongwenMain.config.zhuyin = localStorage['zhuyin'];
+
+    localStorage['pinyin'] = document.optform.pinyin.value;
+    chrome.extension.getBackgroundPage().zhongwenMain.config.pinyin = localStorage['pinyin'];
 
     localStorage['grammar'] = document.optform.grammar.value;
     chrome.extension.getBackgroundPage().zhongwenMain.config.grammar = localStorage['grammar'];

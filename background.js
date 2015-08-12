@@ -118,6 +118,7 @@ initStorage("tonecolors", "yes");
 initStorage("fontSize", "small");
 initStorage("skritterTLD", "com");
 initStorage("zhuyin", "no");
+initStorage("pinyin", "yes");
 initStorage("grammar", "yes");
 
 zhongwenMain.config = {};
@@ -126,6 +127,7 @@ zhongwenMain.config.tonecolors = localStorage["tonecolors"];
 zhongwenMain.config.fontSize = localStorage["fontSize"]
 zhongwenMain.config.skritterTLD = localStorage.skritterTLD;
 zhongwenMain.config.zhuyin = localStorage.zhuyin;
+zhongwenMain.config.pinyin = localStorage.pinyin;
 zhongwenMain.config.grammar = localStorage.grammar;
 
 if (localStorage['enabled'] == 1) {
