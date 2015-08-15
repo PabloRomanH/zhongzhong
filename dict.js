@@ -1,5 +1,11 @@
 /*
-        Zhongwen - A Chinese-English Popup Dictionary
+        Zhongzhong - A Chinese-English Popup Dictionary
+        Copyright (C) 2015 Pablo Roman
+        https://chrome.google.com/webstore/detail/dggcgdjndddfmcfoipccicfoajmciacf
+
+        ---
+
+        Originally based on Zhongwen 4.0.1
         Copyright (C) 2011 Christian Schiller
         https://chrome.google.com/extensions/detail/kkmlkkjojmombglmlpbpapmhcaljjkde
 
@@ -93,7 +99,7 @@ zhongwenDict.prototype = {
     hasKeyword: function (keyword) {
         return this.grammarKeywords[keyword];
     },
-    
+
     wordSearch: function(word, max) {
         var entry = { };
 

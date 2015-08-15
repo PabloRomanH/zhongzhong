@@ -1,8 +1,9 @@
-Zhongwen - A Chinese Popup Dictionary
+Zhongzhong - A Chinese Popup Dictionary
 
+Copyright (C) 2015 Pablo Roman
 Copyright (C) 2010-2014 Christian Schiller
 
-https://chrome.google.com/extensions/detail/kkmlkkjojmombglmlpbpapmhcaljjkde
+https://chrome.google.com/webstore/detail/dggcgdjndddfmcfoipccicfoajmciacf
 
 Translate Chinese characters and words by simply hovering over them with the mouse.
 
