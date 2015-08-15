@@ -981,7 +981,12 @@ var zhongwenContent = {
                 defClass += '-small';
             }
             var translation = e[4].replace(/\//g, '; ');
-            html += '<br><span class="' + defClass + '">' + translation + '</span><br>';
+
+            html += '<br>';
+
+            if (window.zhongwen.config.definitions == 'yes') {
+                html += '<span class="' + defClass + '">' + translation + '</span><br>';
+            }
 
             // Grammar
             if (window.zhongwen.config.grammar != 'no' && entry.grammar && entry.grammar.index == i) {

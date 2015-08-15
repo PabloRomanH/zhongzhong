@@ -46,11 +46,19 @@ function loadVals() {
     }
 
     storedValue = localStorage['pinyin'];
-    if(storedValue == 'yes') {
-        document.optform.pinyin[1].selected = true;
+    if(storedValue == 'no') {
+        document.optform.pinyin[0].selected = true;
     }
     else {
-        document.optform.pinyin[0].selected = true;
+        document.optform.pinyin[1].selected = true;
+    }
+
+    storedValue = localStorage['definitions'];
+    if(storedValue == 'no') {
+        document.optform.definitions[0].selected = true;
+    }
+    else {
+        document.optform.definitions[1].selected = true;
     }
 
     storedValue = localStorage['grammar'];
@@ -80,6 +88,9 @@ function storeVals() {
 
     localStorage['pinyin'] = document.optform.pinyin.value;
     chrome.extension.getBackgroundPage().zhongwenMain.config.pinyin = localStorage['pinyin'];
+
+    localStorage['definitions'] = document.optform.definitions.value;
+    chrome.extension.getBackgroundPage().zhongwenMain.config.definitions = localStorage['definitions'];
 
     localStorage['grammar'] = document.optform.grammar.value;
     chrome.extension.getBackgroundPage().zhongwenMain.config.grammar = localStorage['grammar'];
