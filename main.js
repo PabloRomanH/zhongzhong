@@ -74,6 +74,10 @@ var zhongwenMain = {
     '<tr><td><b>Y&nbsp;:</b></td><td>&nbsp;Move popup location down</td></tr>' +
     '<tr><td><b>X&nbsp;:</b></td><td>&nbsp;Move popup location up</td></tr>' +
     '<tr><td><b>&nbsp;</b></td><td>&nbsp;</td></tr>' +
+    '<tr><td><b>D&nbsp;:</b></td><td>&nbsp;Alternate display definitions</td></tr>' +
+    '<tr><td><b>P&nbsp;:</b></td><td>&nbsp;Alternate display Pinyin</td></tr>' +
+    '<tr><td><b>Z&nbsp;:</b></td><td>&nbsp;Alternate display Zhuyin (Bopomofo)</td></tr>' +
+    '<tr><td><b>&nbsp;</b></td><td>&nbsp;</td></tr>' +
     '<tr><td><b>C&nbsp;:</b></td><td>&nbsp;Copy to clipboard</td></tr>' +
     '<tr><td><b>&nbsp;</b></td><td>&nbsp;</td></tr>' +
     '<tr><td><b>S&nbsp;:</b></td><td>&nbsp;Add word to Skritter queue</td></tr>' +
