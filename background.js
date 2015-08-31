@@ -113,7 +113,7 @@ function initStorage(key, defaultValue) {
     }
 }
 
-initStorage("popupcolor", "yellow");
+initStorage("popupcolor", "white");
 initStorage("tonecolors", "yes");
 initStorage("fontSize", "small");
 initStorage("skritterTLD", "com");
