@@ -331,7 +331,15 @@ var zhongwenContent = {
                     }
                 }
                 break;
-
+            case 68:        // d
+                // show and hide definitions
+                if (window.zhongwen.config.definitions == 'yes') {
+                    window.zhongwen.config.definitions = 'no';
+                } else {
+                    window.zhongwen.config.definitions = 'yes';
+                }
+                this.show(window.zhongwen);
+                break;
             case 71:        // g
                 if (window.zhongwen.config.grammar != 'no' && this.isVisible() && this.lastFound.grammar) {
                     var sel = encodeURIComponent(
@@ -366,7 +374,15 @@ var zhongwenContent = {
                     }
                 }
                 break;
-
+            case 80:        // p
+                    // show and hide pinyin
+                    if (window.zhongwen.config.pinyin == 'yes') {
+                        window.zhongwen.config.pinyin = 'no';
+                    } else {
+                        window.zhongwen.config.pinyin = 'yes';
+                    }
+                    this.show(window.zhongwen);
+                    break;
             case 82:        // r
 
                 var entries = [];
@@ -436,6 +452,15 @@ var zhongwenContent = {
             case 89:        // y
                 this.altView = 0;
                 window.zhongwen.popY += 20;
+                this.show(window.zhongwen);
+                break;
+            case 90:        // z
+                // show and hide zhuyin
+                if (window.zhongwen.config.zhuyin == 'yes') {
+                    window.zhongwen.config.zhuyin = 'no';
+                } else {
+                    window.zhongwen.config.zhuyin = 'yes';
+                }
                 this.show(window.zhongwen);
                 break;
 
@@ -951,8 +976,10 @@ var zhongwenContent = {
             if (window.zhongwen.config.fontSize == 'small') {
                 hanziClass += '-small';
             }
-            html += '<span class="' + hanziClass + '">' + e[2] + '</span>&nbsp;';
-            if (e[1] != e[2]) {
+            if(window.zhongwen.config.chars == 'both' || window.zhongwen.config.chars == 'simplified') {
+                html += '<span class="' + hanziClass + '">' + e[2] + '</span>&nbsp;';
+            }
+            if (window.zhongwen.config.chars == 'both' && e[1] != e[2] || window.zhongwen.config.chars == 'traditional') {
                 html += '<span class="' + hanziClass + '">' + e[1] + '</span>&nbsp;';
             }
 

@@ -37,6 +37,17 @@ function loadVals() {
         document.optform.skritterTLD[0].selected = true;
     }
 
+    storedValue = localStorage['chars'];
+    if(storedValue == 'both') {
+        document.optform.chars[0].selected = true;
+    }
+    else if(storedValue == 'traditional') {
+        document.optform.chars[1].selected = true;
+    }
+    else {
+        document.optform.chars[2].selected = true;
+    }
+
     storedValue = localStorage['zhuyin'];
     if(storedValue == 'yes') {
         document.optform.zhuyin[1].selected = true;
@@ -82,6 +93,9 @@ function storeVals() {
 
     localStorage['skritterTLD'] = document.optform.skritterTLD.value;
     chrome.extension.getBackgroundPage().zhongwenMain.config.skritterTLD = localStorage['skritterTLD'];
+
+    localStorage['chars'] = document.optform.chars.value;
+    chrome.extension.getBackgroundPage().zhongwenMain.config.chars = localStorage['chars'];
 
     localStorage['zhuyin'] = document.optform.zhuyin.value;
     chrome.extension.getBackgroundPage().zhongwenMain.config.zhuyin = localStorage['zhuyin'];
