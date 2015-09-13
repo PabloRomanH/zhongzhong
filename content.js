@@ -976,8 +976,10 @@ var zhongwenContent = {
             if (window.zhongwen.config.fontSize == 'small') {
                 hanziClass += '-small';
             }
-            html += '<span class="' + hanziClass + '">' + e[2] + '</span>&nbsp;';
-            if (e[1] != e[2]) {
+            if(window.zhongwen.config.chars == 'both' || window.zhongwen.config.chars == 'simplified') {
+                html += '<span class="' + hanziClass + '">' + e[2] + '</span>&nbsp;';
+            }
+            if (window.zhongwen.config.chars == 'both' && e[1] != e[2] || window.zhongwen.config.chars == 'traditional') {
                 html += '<span class="' + hanziClass + '">' + e[1] + '</span>&nbsp;';
             }
 
