@@ -640,7 +640,6 @@ var zhongwenContent = {
     },
 
     show: function(tdata, backwards) {
-
         var rp = tdata.prevRangeNode;
         var ro = tdata.prevRangeOfs + tdata.uofs;
         var u;
@@ -701,7 +700,6 @@ var zhongwenContent = {
     },
 
     processEntry: function(e) {
-
         var tdata = window.zhongwen;
 
         var ro = lastRo;
@@ -959,7 +957,6 @@ var zhongwenContent = {
     },
 
     makeHtml: function(entry, showToneColors) {
-
         var e;
         var html = '';
         var texts = [];
@@ -1017,7 +1014,7 @@ var zhongwenContent = {
 
             // Grammar
             if (window.zhongwen.config.grammar != 'no' && entry.grammar && entry.grammar.index == i) {
-                html += '<br><span class="grammar">Press "g" for grammar and usage notes.</span><br><br>'
+                html += '<span class="grammar">Press "g" for grammar and usage notes.</span><br>'
             }
 
             texts[i] = [e[2], e[1], p[1], translation, e[3]];

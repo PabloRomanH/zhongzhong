@@ -100,6 +100,52 @@ zhongwenDict.prototype = {
         return this.grammarKeywords[keyword];
     },
 
+    singleWordSearch: function(word, max) {
+        var entry = { };
+
+        var dict = this.wordDict;
+        var index = this.wordIndex;
+        var maxTrim = 7;
+        var have = {};
+        var count = 0;
+        var maxLen = 0;
+
+        if (max != null){
+            maxTrim = max;
+        }
+
+        entry.data = [];
+
+        ix = this.find(index, word + ',');
+        if (!ix) {
+            return;
+        }
+        ix = ix.split(',');
+
+        for (var j = 1; j < ix.length; ++j) {
+            var offset = ix[j];
+            if (have[offset]) continue;
+
+            var dentry = dict.substring(offset, dict.indexOf('\n', offset));
+
+            if (count >= maxTrim) {
+                entry.more = 1;
+                break;
+            }
+
+            have[offset] = 1;
+            ++count;
+            if (maxLen == 0) maxLen = word.length;
+
+            entry.data.push([dentry, word]);
+        } // for j < ix.length
+
+        if (entry.data.length == 0) return null;
+
+        entry.matchLen = maxLen;
+        return entry;
+    },
+
     wordSearch: function(word, max) {
         var entry = { };
 

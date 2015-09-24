@@ -238,9 +238,22 @@ var zhongwenMain = {
                     // the final index should be the last one with the maximum length
                     entry.grammar = { keyword: word, index: i };
                 }
+
+                var e = entry.data[i][0].match(/.*variant of ([^\^|[]+)/);
+                if (!e) {
+                    e = entry.data[i][0].match(/\/see also ([^\^|[]+)/);
+                }
+
+                if (!e) {
+                     e = entry.data[i][0].match(/\/see ([^\^|[]+)/);
+                }
+
+                if(e) {
+                    var entry2 = this.dict.singleWordSearch(e[1]);
+                    entry.data.push.apply(entry.data, entry2.data);
+                }
             }
         }
-
         return entry;
 
     }
