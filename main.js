@@ -249,8 +249,22 @@ var zhongwenMain = {
                 }
 
                 if(e) {
+                    console.log('searching also',e);
+                    console.log('triggered by', entry.data[i][0])
                     var entry2 = this.dict.singleWordSearch(e[1]);
-                    entry.data.push.apply(entry.data, entry2.data);
+                    console.log('adding words', entry2.data[0]);
+                    for (var add = 0; add < entry2.data.length; add++) {
+                        var repeated = false;
+                        for (var check = 0; check < entry.data.length; check++) {
+                            if (entry.data[check][0] == entry2.data[add][0]) {
+                                repeated = true;
+                                break;
+                            }
+                        }
+                        if (!repeated) {
+                            entry.data.push(entry2.data[add]);
+                        }
+                    }
                 }
             }
         }
