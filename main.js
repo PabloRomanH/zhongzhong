@@ -249,10 +249,7 @@ var zhongwenMain = {
                 }
 
                 if(e) {
-                    console.log('searching also',e);
-                    console.log('triggered by', entry.data[i][0])
                     var entry2 = this.dict.singleWordSearch(e[1]);
-                    console.log('adding words', entry2.data[0]);
                     for (var add = 0; add < entry2.data.length; add++) {
                         var repeated = false;
                         for (var check = 0; check < entry.data.length; check++) {

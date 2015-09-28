@@ -54,9 +54,17 @@
 }
 
 #zhongwen-window .w-hanzi-small {
-        font-size: 18px;
+  font-size: 18px;
   color: #B7E7FF;
   margin-right: 0.7em;
+}
+
+#zhongwen-window .w-hanzi-serif {
+  font-family: serif;
+}
+
+#zhongwen-window .w-hanzi-handdrawn {
+  font-family: 楷体, KaiTi, 华文楷体, STKaiti;
 }
 
 #zhongwen-window .w-pinyin-small {

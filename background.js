@@ -116,6 +116,7 @@ function initStorage(key, defaultValue) {
 initStorage("popupcolor", "white");
 initStorage("tonecolors", "yes");
 initStorage("fontSize", "small");
+initStorage("font", "sans");
 initStorage("skritterTLD", "com");
 initStorage("chars", "both");
 initStorage("zhuyin", "no");
@@ -124,9 +125,10 @@ initStorage("definitions", "yes");
 initStorage("grammar", "yes");
 
 zhongwenMain.config = {};
-zhongwenMain.config.css = localStorage["popupcolor"];
-zhongwenMain.config.tonecolors = localStorage["tonecolors"];
-zhongwenMain.config.fontSize = localStorage["fontSize"]
+zhongwenMain.config.css = localStorage.popupcolor;
+zhongwenMain.config.tonecolors = localStorage.tonecolors;
+zhongwenMain.config.fontSize = localStorage.fontSize;
+zhongwenMain.config.font = localStorage.font;
 zhongwenMain.config.skritterTLD = localStorage.skritterTLD;
 zhongwenMain.config.chars = localStorage.chars;
 zhongwenMain.config.zhuyin = localStorage.zhuyin;

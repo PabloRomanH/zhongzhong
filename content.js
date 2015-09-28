@@ -973,6 +973,13 @@ var zhongwenContent = {
             if (window.zhongwen.config.fontSize == 'small') {
                 hanziClass += '-small';
             }
+
+            if (window.zhongwen.config.font == 'serif') {
+                hanziClass += ' w-hanzi-serif';
+            } else if (window.zhongwen.config.font == 'handdrawn') {
+                hanziClass += ' w-hanzi-handdrawn';
+            }
+
             if(window.zhongwen.config.chars == 'both' || window.zhongwen.config.chars == 'simplified') {
                 html += '<span class="' + hanziClass + '">' + e[2] + '</span>&nbsp;';
             }
