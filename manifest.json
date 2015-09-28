@@ -11,7 +11,7 @@
       "js": [ "js/jquery-1.7.1.min.js", "content.js" ],
       "matches": [ "\u003Call_urls>" ]
    } ],
-   "description": "Chinese popup translator. Great tool for learning Chinese. Supports adding words to Skritter.",
+   "description": "Chinese popup translator. Great tool for learning Chinese. Frequently updated.",
    "icons": {
       "128": "images/zhongzhong.png",
       "16": "images/zhongzhong16.png",
@@ -22,6 +22,6 @@
    "options_page": "options.html",
    "permissions": [ "tabs", "http://*/*", "https://*/*", "contextMenus" ],
    "update_url": "https://clients2.google.com/service/update2/crx",
-   "version": "1.0.2",
+   "version": "1.0.3",
    "web_accessible_resources": [ "css/*", "js/*", "images/*" ]
 }
