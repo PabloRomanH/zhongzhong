@@ -339,6 +339,10 @@ var zhongwenContent = {
                     window.zhongwen.config.definitions = 'yes';
                 }
                 this.show(window.zhongwen);
+                chrome.extension.sendRequest({
+                    type: 'toggle',
+                    field: 'definitions'
+                });
                 break;
             case 71:        // g
                 if (window.zhongwen.config.grammar != 'no' && this.isVisible() && this.lastFound.grammar) {
@@ -375,16 +379,19 @@ var zhongwenContent = {
                 }
                 break;
             case 80:        // p
-                    // show and hide pinyin
-                    if (window.zhongwen.config.pinyin == 'yes') {
-                        window.zhongwen.config.pinyin = 'no';
-                    } else {
-                        window.zhongwen.config.pinyin = 'yes';
-                    }
-                    this.show(window.zhongwen);
-                    break;
+                // show and hide pinyin
+                if (window.zhongwen.config.pinyin == 'yes') {
+                    window.zhongwen.config.pinyin = 'no';
+                } else {
+                    window.zhongwen.config.pinyin = 'yes';
+                }
+                this.show(window.zhongwen);
+                chrome.extension.sendRequest({
+                    type: 'toggle',
+                    field: 'pinyin'
+                });
+                break;
             case 82:        // r
-
                 var entries = [];
                 for (var j = 0; j < this.lastFound.length; j++) {
                     var entry = {};
@@ -403,7 +410,6 @@ var zhongwenContent = {
                 this.showPopup("Added to word list.<p>Press Alt+W to open word list.", null, -1, -1);
 
                 break;
-
             case 83:        // s
                 if (this.isVisible()) {
 
@@ -428,7 +434,6 @@ var zhongwenContent = {
                     });
                 }
                 break;
-
             case 84:     // t
                 if (this.isVisible()) {
                     var sel = encodeURIComponent(
@@ -443,7 +448,6 @@ var zhongwenContent = {
                     });
                 }
                 break;
-
             case 88:        // x
                 this.altView = 0;
                 window.zhongwen.popY -= 20;
@@ -462,6 +466,10 @@ var zhongwenContent = {
                     window.zhongwen.config.zhuyin = 'yes';
                 }
                 this.show(window.zhongwen);
+                chrome.extension.sendRequest({
+                    type: 'toggle',
+                    field: 'zhuyin'
+                });
                 break;
 
             case 49:     // 1

@@ -101,6 +101,20 @@ chrome.extension.onRequest.addListener(function(request, sender, response) {
                 allFrames: true
             })
             break;
+        case 'toggle':
+            if(request.field == 'zhuyin') {
+                localStorage.zhuyin = localStorage.zhuyin == 'yes' ? 'no' : 'yes';
+                zhongwenMain.config.zhuyin = localStorage.zhuyin;
+            }
+            else if(request.field == 'pinyin') {
+                localStorage.pinyin = localStorage.pinyin == 'yes' ? 'no' : 'yes';
+                zhongwenMain.config.pinyin = localStorage.pinyin;
+            }
+            else if(request.field == 'definitions') {
+                localStorage.definitions = localStorage.definitions == 'yes' ? 'no' : 'yes';
+                zhongwenMain.config.definitions = localStorage.definitions;
+            }
+            break;
         default:
     // ignore
     }
