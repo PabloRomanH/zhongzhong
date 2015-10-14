@@ -118,10 +118,10 @@ var zhongwenContent = {
 
         if (!x || !y) x = y = 0;
 
-        var popup = topdoc.getElementById('zhongwen-window');
+        var css = topdoc.getElementById('zhongwen-css');
 
-        if (!popup) {
-            var css = topdoc.createElementNS('http://www.w3.org/1999/xhtml', 'link');
+        if (!css) {
+            css = topdoc.createElementNS('http://www.w3.org/1999/xhtml', 'link');
             css.setAttribute('rel', 'stylesheet');
             css.setAttribute('type', 'text/css');
             var cssdoc = window.zhongwen.config.css;
@@ -129,7 +129,11 @@ var zhongwenContent = {
                 cssdoc + '.css'));
             css.setAttribute('id', 'zhongwen-css');
             topdoc.getElementsByTagName('head')[0].appendChild(css);
+        }
 
+        var popup = topdoc.getElementById('zhongwen-window');
+
+        if (!popup) {
             popup = topdoc.createElementNS('http://www.w3.org/1999/xhtml', 'div');
             popup.setAttribute('id', 'zhongwen-window');
             topdoc.documentElement.appendChild(popup);
