@@ -574,6 +574,20 @@ var zhongwenContent = {
                     });
                 }
                 break;
+            case 56:     // 8
+                if (ev.altKey) {
+                    sel = encodeURIComponent(
+                        window.getSelection().toString());
+
+                    // http://baike.baidu.com/search?word=%E7%A0%B4%E9%87%9C%E6%B2%89%E8%88%9F
+                    var baike = 'http://baike.baidu.com/search?word=' + sel;
+
+                    chrome.extension.sendRequest({
+                        type: 'open',
+                        url: baike
+                    });
+                }
+                break;
             default:
                 return;
         }
