@@ -3,7 +3,10 @@
       "scripts": [ "dict.js", "main.js", "background.js" ]
    },
    "browser_action": {
-      "default_icon": "images/zhongzhong48.png",
+      "default_icon": {
+        "19": "images/zhongzhong19.png",
+        "38": "images/zhongzhong38.png"
+      },
       "default_title": "Zhongzhong Chinese Popup Dictionary"
    },
    "content_scripts": [ {
@@ -13,15 +16,17 @@
    } ],
    "description": "Chinese popup translator. Great tool for learning Chinese. Frequently updated.",
    "icons": {
-      "128": "images/zhongzhong.png",
-      "16": "images/zhongzhong16.png",
-      "48": "images/zhongzhong48.png"
+      "128": "images/zhongzhong128.png",
+      "48": "images/zhongzhong48.png",
+      "38": "images/zhongzhong38.png",
+      "32": "images/zhongzhong32.png",
+      "19": "images/zhongzhong19.png"
    },
    "manifest_version": 2,
    "name": "Zhongzhong: An improved Chinese Dictionary",
    "options_page": "options.html",
    "permissions": [ "tabs", "http://*/*", "https://*/*", "contextMenus" ],
    "update_url": "https://clients2.google.com/service/update2/crx",
-   "version": "1.0.6",
+   "version": "1.0.7",
    "web_accessible_resources": [ "css/*", "js/*", "images/*" ]
 }
