@@ -92,6 +92,10 @@ zhongwenDict.prototype = {
         this.wordDict = this.fileRead(chrome.extension.getURL("data/cedict_ts.u8"));
         this.wordIndex = this.fileRead(chrome.extension.getURL("data/cedict.idx"));
 
+        this.hanziData = this.fileRead(chrome.extension.getURL("data/hanzi.dat"), 'UTF-8').split('\n');
+		// this.radData = this.fileReadArray(chrome.extension.getURL("data/radicals.dat"), 'UTF-8');
+        this.radData = ['亻		にんべん	person	伊位依偉荏液億俺化仮'];
+
         var grammarKeywordFile = this.fileRead(chrome.extension.getURL("data/grammarKeywordsMin.json"));
         this.grammarKeywords = JSON.parse(grammarKeywordFile);
     },
@@ -201,6 +205,66 @@ zhongwenDict.prototype = {
         entry.matchLen = maxLen;
         return entry;
     },
+
+    hanziSearch: function(char) {
+        var data = this.findHanzi(char);
+		if (!data) return null;
+
+        radical = 1;
+
+        var radicals = [];
+
+        for (var i = 0; i < this.radData.length; i++) {
+            if (radical != i && this.radData[i].indexOf(char) != -1) {
+                radicals.push(this.radData[i].split('\t'));
+            }
+        }
+
+        return {
+            hanzi: char,
+            pinyin: data.kMandarin,
+            definition: data.kDefinition,
+            simplified: data.kSimplifiedVariant,
+            traditional: data.kTraditionalVariant,
+            variant: data.kSemanticVariant,
+            specializedVariant: data.kSpecializedSemanticVariant,
+            freq: data.kFrequency,
+            strokes: data.kTotalStrokes,
+            radical: data.radical,
+            hsk: data.hsk,
+            dict: {
+                fourcorner: data.kFourCornerCode,
+                cangjie: data.kCangjie,
+                hanyu: data.kHanYu,
+                kangxi: data.kKangXi,
+                phonetic: data.kPhonetic,
+                rth: data.rth,
+                rthkeyword: data.rthkeyword,
+                rsh: data.rsh,
+                rshkeyword: data.rshkeyword
+            }
+        };
+    },
+
+    findHanzi: function(char) {
+        var data = this.hanziData;
+		for (var i = 1; i < data.length; i++) {
+            if (data[i][0] === char) {
+                var result = {};
+
+                var fields = data[0].split('|');
+                var arr = data[i].split('|');
+
+                for (var j = 0; j < arr.length; j++) {
+                    result[fields[j]] = arr[j];
+                }
+
+                return result;
+            }
+        }
+
+        return null;
+	},
 
     translate: function(text) {
         var e, o;

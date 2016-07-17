@@ -230,44 +230,48 @@ var zhongwenMain = {
         }
     },
 
-    search: function(text) {
+    search: function(text, dict) {
+        if (dict === 0) {
+            var entry = this.dict.wordSearch(text);
+            if (entry != null) {
+                for (var i = 0; i < entry.data.length; i++) {
+                    var word = entry.data[i][1];
+                    if (this.dict.hasKeyword(word) && (entry.matchLen == word.length)) {
+                        // the final index should be the last one with the maximum length
+                        entry.grammar = { keyword: word, index: i };
+                    }
 
-        var entry = this.dict.wordSearch(text);
-        if (entry != null) {
-            for (var i = 0; i < entry.data.length; i++) {
-                var word = entry.data[i][1];
-                if (this.dict.hasKeyword(word) && (entry.matchLen == word.length)) {
-                    // the final index should be the last one with the maximum length
-                    entry.grammar = { keyword: word, index: i };
-                }
+                    var e = entry.data[i][0].match(/.*variant of ([^\^|[]+)/);
+                    if (!e) {
+                        e = entry.data[i][0].match(/\/see also ([^\^|[]+)/);
+                    }
 
-                var e = entry.data[i][0].match(/.*variant of ([^\^|[]+)/);
-                if (!e) {
-                    e = entry.data[i][0].match(/\/see also ([^\^|[]+)/);
-                }
+                    if (!e) {
+                        e = entry.data[i][0].match(/\/see ([^\^|[]+)/);
+                    }
 
-                if (!e) {
-                     e = entry.data[i][0].match(/\/see ([^\^|[]+)/);
-                }
-
-                if(e) {
-                    var entry2 = this.dict.singleWordSearch(e[1]);
-                    for (var add = 0; add < entry2.data.length; add++) {
-                        var repeated = false;
-                        for (var check = 0; check < entry.data.length; check++) {
-                            if (entry.data[check][0] == entry2.data[add][0]) {
-                                repeated = true;
-                                break;
+                    if (e) {
+                        var entry2 = this.dict.singleWordSearch(e[1]);
+                        for (var add = 0; add < entry2.data.length; add++) {
+                            var repeated = false;
+                            for (var check = 0; check < entry.data.length; check++) {
+                                if (entry.data[check][0] == entry2.data[add][0]) {
+                                    repeated = true;
+                                    break;
+                                }
                             }
-                        }
-                        if (!repeated) {
-                            entry.data.push(entry2.data[add]);
+                            if (!repeated) {
+                                entry.data.push(entry2.data[add]);
+                            }
                         }
                     }
                 }
             }
+            return entry;
+        } else if (dict === 1) {
+            var entry = this.dict.hanziSearch(text.charAt(0));
+            return entry;
         }
-        return entry;
 
     }
 };

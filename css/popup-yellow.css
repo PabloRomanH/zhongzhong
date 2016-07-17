@@ -103,3 +103,120 @@
   font-weight: bold;
   color: darkblue;
 }
+
+/* used for hanzi information */
+
+#zhongwen-window .k-main-tb {
+	width: 300px;
+}
+
+#zhongwen-window .k-hanzi {
+	font-family: serif;
+	font-size: 48px;
+	color: #000000;
+}
+
+#zhongwen-window .k-eigo {
+	font-size: 12px;
+}
+
+/* hanzi radical, grade, freq, strokes box */
+
+#zhongwen-window .k-abox-tb {
+	width: 120px;
+	margin-bottom: 4px;
+	float: right;
+	clear: right;
+}
+
+#zhongwen-window .k-abox-r {
+	font-size: 12px;
+	text-align: center;
+	padding: 1px 4px;
+	background: #FFFFE6;
+	color: #000000;
+}
+
+#zhongwen-window .k-abox-g {
+	font-size: 12px;
+	text-align: center;
+	padding: 1px 4px;
+	background: #F7F7D0;
+	color: #000000;
+}
+
+#zhongwen-window .k-abox-f {
+	font-size: 12px;
+	text-align: center;
+	padding: 1px 4px;
+	background: #F7F7D0;
+	color: #000000;
+}
+
+#zhongwen-window .k-abox-s {
+	font-size: 12px;
+	text-align: center;
+	padding: 1px 4px;
+	background: #FFFFE6;
+	color: #000000;
+}
+
+/* hanzi components box */
+
+#zhongwen-window .k-bbox-tb {
+	width: 120px;
+	margin-bottom: 4px;
+	float: right;
+	clear: right;
+}
+
+#zhongwen-window .k-bbox-0a {
+	vertical-align: top;
+	font-size: 11px;
+	padding: 1px 3px;
+	background: #FFFFE6;
+	color: #000000;
+}
+
+#zhongwen-window .k-bbox-0b {
+	vertical-align: top;
+	font-size: 11px;
+	padding: 1px 3px;
+	background: #FFFFE6;
+	color: #000000;
+}
+
+#zhongwen-window .k-bbox-1a {
+	vertical-align: top;
+	font-size: 11px;
+	padding: 1px 3px;
+	background: #F7F7D0;
+	color: #000000;
+}
+
+#zhongwen-window .k-bbox-1b {
+	vertical-align: top;
+	font-size: 11px;
+	padding: 1px 3px;
+	background: #F7F7D0;
+	color: #000000;
+}
+
+
+/* hanzi: misc index */
+
+#zhongwen-window .k-mix-tb {
+	width: 100%
+}
+
+#zhongwen-window .k-mix-td0 {
+	font-size: 12px;
+	background: #FFFFE6;
+	color: #000000;
+}
+
+#zhongwen-window .k-mix-td1 {
+	font-size: 12px;
+	background: #F7F7D0;
+	color: #000000;
+}

@@ -8,17 +8,15 @@ chrome.browserAction.onClicked.addListener(zhongwenMain.enableToggle);
 chrome.tabs.onActiveChanged.addListener(zhongwenMain.onTabSelect);
 
 chrome.extension.onRequest.addListener(function(request, sender, response) {
-
     switch(request.type) {
         case 'enable?':
             zhongwenMain.onTabSelect(sender.tab.id);
             break;
         case 'search':
-            var e = zhongwenMain.search(request.text);
+            var e = zhongwenMain.search(request.text, request.dict);
             response(e);
             break;
         case 'open':
-
             var tabID = zhongwenMain.tabIDs[request.tabType];
             if (tabID) {
                 chrome.tabs.get(tabID, function(tab) {
@@ -50,9 +48,7 @@ chrome.extension.onRequest.addListener(function(request, sender, response) {
                     }
                 });
             }
-
             break;
-
         case 'copy':
             var txt = document.createElement('textarea');
             txt.style.position = "absolute";
@@ -93,7 +89,6 @@ chrome.extension.onRequest.addListener(function(request, sender, response) {
                     }
                 });
             }
-
             break;
         case 'iframe':
             chrome.tabs.executeScript(sender.tab.id, {

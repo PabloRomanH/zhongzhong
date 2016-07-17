@@ -52,6 +52,8 @@
 
 var zhongwenContent = {
 
+    dict: 0,
+
     altView: 0,
 
     lastFound: null,
@@ -77,7 +79,7 @@ var zhongwenContent = {
     onDOMNodeInserted: function(ev) {
         if (ev.target.nodeName == 'IFRAME') {
             chrome.extension.sendRequest({
-                "type": "iframe"
+                type: 'iframe'
             });
         }
     },
@@ -283,7 +285,6 @@ var zhongwenContent = {
         zhongwenContent._onKeyDown(ev)
     },
     _onKeyDown: function(ev) {
-
         if (ev.ctrlKey || ev.metaKey) {
             return;
         }
@@ -310,6 +311,11 @@ var zhongwenContent = {
         var i;
 
         switch (ev.keyCode) {
+            case 16:	// shift
+            case 13:	// enter
+                this.dict = (this.dict + 1) % 2;
+                this.show(window.zhongwen);
+                break;
             case 27:        // esc
                 this.hidePopup();
                 break;
@@ -407,50 +413,53 @@ var zhongwenContent = {
                 }
 
                 chrome.extension.sendRequest({
-                    "type": "add",
-                    "entries": entries
+                    type: 'add',
+                    entries: entries
                 });
 
                 this.showPopup("Added to word list.<p>Press Alt+W to open word list.", null, -1, -1);
 
                 break;
             case 83:        // s
-                if (this.isVisible()) {
+                if (!this.isVisible()) {
+                    break;
+                }
 
-                    // http://www.skritter.com/vocab/api/add?from=Chrome&lang=zh&word=浏览&trad=瀏 覽&rdng=liú lǎn&defn=to skim over; to browse
+                // http://www.skritter.com/vocab/api/add?from=Chrome&lang=zh&word=浏览&trad=瀏 覽&rdng=liú lǎn&defn=to skim over; to browse
 
-                    var skritter = 'http://www.skritter.com';
-                    if (window.zhongwen.config.skritterTLD == 'cn') {
-                        skritter = 'http://www.skritter.cn';
-                    }
+                var skritter = 'http://www.skritter.com';
+                if (window.zhongwen.config.skritterTLD == 'cn') {
+                    skritter = 'http://www.skritter.cn';
+                }
 
-                    skritter +=
+                skritter +=
                     '/vocab/api/add?from=Zhongwen&siteref=Zhongwen&lang=zh&word=' +
                     encodeURIComponent(this.lastFound[0][0]) +
                     '&trad=' + encodeURIComponent(this.lastFound[0][1]) +
                     '&rdng=' + encodeURIComponent(this.lastFound[0][4]) +
                     '&defn=' + encodeURIComponent(this.lastFound[0][3]);
 
-                    chrome.extension.sendRequest({
-                        type: 'open',
-                        tabType: 'skritter',
-                        url: skritter
-                    });
-                }
+                chrome.extension.sendRequest({
+                    type: 'open',
+                    tabType: 'skritter',
+                    url: skritter
+                });
                 break;
             case 84:     // t
-                if (this.isVisible()) {
-                    var sel = encodeURIComponent(
-                        window.getSelection().toString());
-
-                    // http://tatoeba.org/eng/sentences/search?from=cmn&to=eng&query=%E8%BF%9B%E8%A1%8C
-                    var tatoeba = 'http://tatoeba.org/eng/sentences/search?from=cmn&to=eng&query=' + sel;
-
-                    chrome.extension.sendRequest({
-                        type: 'open',
-                        url: tatoeba
-                    });
+                if (!this.isVisible()) {
+                    break;
                 }
+
+                var sel = encodeURIComponent(
+                    window.getSelection().toString());
+
+                // http://tatoeba.org/eng/sentences/search?from=cmn&to=eng&query=%E8%BF%9B%E8%A1%8C
+                var tatoeba = 'http://tatoeba.org/eng/sentences/search?from=cmn&to=eng&query=' + sel;
+
+                chrome.extension.sendRequest({
+                    type: 'open',
+                    url: tatoeba
+                });
                 break;
             case 88:        // x
                 this.altView = 0;
@@ -477,116 +486,124 @@ var zhongwenContent = {
                 break;
 
             case 49:     // 1
-                if (ev.altKey) {
-                    var sel = encodeURIComponent(
-                        window.getSelection().toString());
-
-                    // http://www.nciku.com/search/all/%E4%B8%AD
-                    var nciku = 'http://www.nciku.com/search/all/' + sel;
-
-                    chrome.extension.sendRequest({
-                        type: 'open',
-                        url: nciku
-                    });
+                if (!ev.altKey) {
+                    break;
                 }
+                var sel = encodeURIComponent(
+                    window.getSelection().toString());
+
+                // http://www.nciku.com/search/all/%E4%B8%AD
+                var nciku = 'http://www.nciku.com/search/all/' + sel;
+
+                chrome.extension.sendRequest({
+                    type: 'open',
+                    url: nciku
+                });
                 break;
             case 50:     // 2
-                if (ev.altKey) {
-                    sel = encodeURIComponent(
-                        window.getSelection().toString());
-
-                    // http://www.yellowbridge.com/chinese/wordsearch.php?searchMode=C&word=%E4%B8%AD
-                    var yellow = 'http://www.yellowbridge.com/chinese/wordsearch.php?searchMode=C&word=' + sel;
-
-                    chrome.extension.sendRequest({
-                        type: 'open',
-                        url: yellow
-                    });
+                if (!ev.altKey) {
+                    break;
                 }
+                sel = encodeURIComponent(
+                    window.getSelection().toString());
+
+                // http://www.yellowbridge.com/chinese/wordsearch.php?searchMode=C&word=%E4%B8%AD
+                var yellow = 'http://www.yellowbridge.com/chinese/wordsearch.php?searchMode=C&word=' + sel;
+
+                chrome.extension.sendRequest({
+                    type: 'open',
+                    url: yellow
+                });
                 break;
             case 51:     // 3
-                if (ev.altKey) {
-                    sel = encodeURIComponent(
-                        window.getSelection().toString());
-
-                    // http://dict.cn/%E7%BF%BB%E8%AF%91
-                    var dictcn = 'http://dict.cn/' + sel;
-
-                    chrome.extension.sendRequest({
-                        type: 'open',
-                        url: dictcn
-                    });
+                if (!ev.altKey) {
+                    break;
                 }
+                sel = encodeURIComponent(
+                    window.getSelection().toString());
+
+                // http://dict.cn/%E7%BF%BB%E8%AF%91
+                var dictcn = 'http://dict.cn/' + sel;
+
+                chrome.extension.sendRequest({
+                    type: 'open',
+                    url: dictcn
+                });
                 break;
             case 52:     // 4
-                if (ev.altKey) {
-                    sel = encodeURIComponent(
-                        window.getSelection().toString());
-
-                    // http://www.iciba.com/%E4%B8%AD%E9%A4%90
-                    var iciba = 'http://www.iciba.com/' + sel;
-
-                    chrome.extension.sendRequest({
-                        type: 'open',
-                        url: iciba
-                    });
+                if (!ev.altKey) {
+                    break;
                 }
+                sel = encodeURIComponent(
+                    window.getSelection().toString());
+
+                // http://www.iciba.com/%E4%B8%AD%E9%A4%90
+                var iciba = 'http://www.iciba.com/' + sel;
+
+                chrome.extension.sendRequest({
+                    type: 'open',
+                    url: iciba
+                });
                 break;
             case 53:     // 5
-                if (ev.altKey) {
-                    sel = encodeURIComponent(
-                        window.getSelection().toString());
-
-                    // http://www.mdbg.net/chindict/chindict.php?page=worddict&wdrst=0&wdqb=%E6%B0%B4
-                    var mdbg = 'http://www.mdbg.net/chindict/chindict.php?page=worddict&wdrst=0&wdqb=' + sel;
-
-                    chrome.extension.sendRequest({
-                        type: 'open',
-                        url: mdbg
-                    });
+                if (!ev.altKey) {
+                    break;
                 }
+                sel = encodeURIComponent(
+                    window.getSelection().toString());
+
+                // http://www.mdbg.net/chindict/chindict.php?page=worddict&wdrst=0&wdqb=%E6%B0%B4
+                var mdbg = 'http://www.mdbg.net/chindict/chindict.php?page=worddict&wdrst=0&wdqb=' + sel;
+
+                chrome.extension.sendRequest({
+                    type: 'open',
+                    url: mdbg
+                });
                 break;
             case 54:     // 6
-                if (ev.altKey) {
-                    sel = encodeURIComponent(
-                        window.getSelection().toString());
-
-                    // http://jukuu.com/show-%E8%AF%8D%E5%85%B8-0.html
-                    var jukuu = 'http://jukuu.com/show-' + sel + '-0.html';
-
-                    chrome.extension.sendRequest({
-                        type: 'open',
-                        url: jukuu
-                    });
+                if (!ev.altKey) {
+                    break;
                 }
+                sel = encodeURIComponent(
+                    window.getSelection().toString());
+
+                // http://jukuu.com/show-%E8%AF%8D%E5%85%B8-0.html
+                var jukuu = 'http://jukuu.com/show-' + sel + '-0.html';
+
+                chrome.extension.sendRequest({
+                    type: 'open',
+                    url: jukuu
+                });
                 break;
             case 55:     // 7
-                if (ev.altKey) {
-                    sel = encodeURIComponent(
-                        window.getSelection().toString());
-
-                    // https://www.moedict.tw/~%E4%B8%AD%E6%96%87
-                    var moedict = 'https://www.moedict.tw/~' + sel;
-
-                    chrome.extension.sendRequest({
-                        type: 'open',
-                        url: moedict
-                    });
+                if (!ev.altKey) {
+                    break;
                 }
+                sel = encodeURIComponent(
+                    window.getSelection().toString());
+
+                // https://www.moedict.tw/~%E4%B8%AD%E6%96%87
+                var moedict = 'https://www.moedict.tw/~' + sel;
+
+                chrome.extension.sendRequest({
+                    type: 'open',
+                    url: moedict
+                });
                 break;
             case 56:     // 8
-                if (ev.altKey) {
-                    sel = encodeURIComponent(
-                        window.getSelection().toString());
-
-                    // http://baike.baidu.com/search?word=%E7%A0%B4%E9%87%9C%E6%B2%89%E8%88%9F
-                    var baike = 'http://baike.baidu.com/search?word=' + sel;
-
-                    chrome.extension.sendRequest({
-                        type: 'open',
-                        url: baike
-                    });
+                if (!ev.altKey) {
+                    break;
                 }
+                sel = encodeURIComponent(
+                    window.getSelection().toString());
+
+                // http://baike.baidu.com/search?word=%E7%A0%B4%E9%87%9C%E6%B2%89%E8%88%9F
+                var baike = 'http://baike.baidu.com/search?word=' + sel;
+
+                chrome.extension.sendRequest({
+                    type: 'open',
+                    url: baike
+                });
                 break;
             default:
                 return;
@@ -716,13 +733,13 @@ var zhongwenContent = {
         lastSelEnd = selEndList;
         lastRo = ro;
         chrome.extension.sendRequest({
-            "type": "search",
-            "text": text
+            type: 'search',
+            text: text,
+            dict: this.dict
         },
         zhongwenContent.processEntry);
 
         return 0;
-
     },
 
     processEntry: function(e) {
@@ -975,12 +992,24 @@ var zhongwenContent = {
 
     copyToClipboard : function(data) {
         chrome.extension.sendRequest({
-            "type": "copy",
-            "data": data
+            type: 'copy',
+            data: data
         });
 
         this.showPopup("Copied to clipboard", null, -1, -1);
     },
+
+    numList: [
+        ['fourcorner', 'Four Corner Code'],
+        ['cangjie', 'Cangjie input code'],
+        ['hanyu', 'Hanyu Da Zidian'],
+        ['kangxi', 'Kang Xi'],
+        ['phonetic', 'Ten Thousand Characters'],
+        ['rth', 'Remembering the Traditional Hanzi'],
+        ['rthkeyword', 'RTH keyword'],
+        ['rsh', 'Remembering the Simplified Hanzi'],
+        ['rshkeyword', 'RSH keyword']
+    ],
 
     makeHtml: function(entry, showToneColors) {
         var e;
@@ -989,75 +1018,151 @@ var zhongwenContent = {
 
         if (entry == null) return '';
 
-        for (var i = 0; i < entry.data.length; ++i) {
-            e = entry.data[i][0].match(/^([^\s]+?)\s+([^\s]+?)\s+\[(.*?)\]?\s*\/(.+)\//);
-            if (!e) continue;
+        if (this.dict === 1) {
+            var k;
+            var nums;
 
-            // Hanzi
+            var k = entry.hsk !== '' ? ('HSK grade<br/>' + entry.hsk) : 'Not in HSK<br/>';
 
-            var hanziClass = 'w-hanzi';
-            if (window.zhongwen.config.fontSize == 'small') {
-                hanziClass += '-small';
+            var radical = String.fromCharCode(12031 + parseInt(entry.radical));
+            var box = '<table class="k-abox-tb"><tr>' +
+                '<td class="k-abox-r">radical<br/>' + radical + ' ' + entry.radical + '</td>' +
+                '<td class="k-abox-g">' + k + '</td>' +
+                '</tr><tr>' +
+                '<td class="k-abox-f">freq<br/>' + (entry.freq ? entry.freq : '-') + '</td>' +
+                '<td class="k-abox-s">strokes<br/>' + entry.strokes + '</td>' +
+                '</tr></table>';
+
+
+            if (entry.variant || entry.specializedVariant) {
+                box += '<table class="k-bbox-tb">';
+                j = 1;
+                if (entry.variant) {
+                    c = ' class="k-bbox-' + (j ^= 1);
+                    box += '<tr><td' + c + 'b">Variant</td>' +
+                            '<td' + c + 'b">' + entry.variant + '</td></tr>';
+                }
+                if (entry.specializedVariant) {
+                    c = ' class="k-bbox-' + (j ^= 1);
+                    box += '<tr><td' + c + 'b">Specialized variant</td>' +
+                            '<td' + c + 'b">' + entry.specializedVariant + '</td></tr>';
+                }
+                box += '</table>';
             }
 
-            if (window.zhongwen.config.font == 'serif') {
-                hanziClass += ' w-hanzi-serif';
-            } else if (window.zhongwen.config.font == 'handdrawn') {
-                hanziClass += ' w-hanzi-handdrawn';
-            }
+            nums = '';
+            j = 0;
 
-            if(window.zhongwen.config.chars == 'both' || window.zhongwen.config.chars == 'simplified') {
-                html += '<span class="' + hanziClass + '">' + e[2] + '</span>&nbsp;';
+            for (i = 0; i < this.numList.length; i++) {
+                c = this.numList[i][0];
+                s = entry.dict[c];
+                c = ' class="k-mix-td' + (j ^= 1) + '"';
+                nums += '<tr><td' + c + '>' + this.numList[i][1] + '</td><td' + c + '>' + (s ? s : '-') + '</td></tr>';
             }
-            if (window.zhongwen.config.chars == 'both' && e[1] != e[2] || window.zhongwen.config.chars == 'traditional') {
-                html += '<span class="' + hanziClass + '">' + e[1] + '</span>&nbsp;';
+            var code = entry.hanzi.charCodeAt(0).toString(16).toUpperCase();
+            c = ' class="k-mix-td' + (j ^= 1) + '"';
+            nums += '<tr><td' + c + '>Unicode</td><td' + c + '>' + code + '</td></tr>';
+            if (nums.length) nums = '<table class="k-mix-tb">' + nums + '</table>';
+
+            html += '<table class="k-main-tb"><tr><td valign="top">';
+            html += box;
+            if (entry.simplified) {
+                html += '<span class="k-hanzi">' + entry.simplified + ' ' + entry.hanzi + '</span><br/>';
+            } else if (entry.traditional) {
+                html += '<span class="k-hanzi">' + entry.hanzi + ' ' + entry.traditional + '</span><br/>';
+            } else {
+                html += '<span class="k-hanzi">' + entry.hanzi + '</span><br/>';
             }
+            html += '<div class="k-def">' + entry.definition + '</div>';
 
             // Pinyin
-
             var pinyinClass = 'w-pinyin';
             if (window.zhongwen.config.fontSize == 'small') {
                 pinyinClass += '-small';
             }
-            var p = this.pinyinAndZhuyin(e[3], showToneColors, pinyinClass);
+            var p = this.pinyinAndZhuyin(entry.pinyin, showToneColors, pinyinClass);
 
             if (window.zhongwen.config.pinyin == 'yes') {
-                html += p[0];
+                html += p[0] + '<br>';
             }
 
             // Zhuyin
-
             if (window.zhongwen.config.zhuyin == 'yes') {
-                html += '<br>' + p[2];
+                html += p[2] + '<br>';
             }
 
-            // Definition
+            html += '<br></td></tr><tr><td>' + nums + '</td></tr></table>';
+        } else if (this.dict === 0) {
+            for (var i = 0; i < entry.data.length; ++i) {
+                e = entry.data[i][0].match(/^([^\s]+?)\s+([^\s]+?)\s+\[(.*?)\]?\s*\/(.+)\//);
+                if (!e) continue;
 
-            var defClass = 'w-def';
-            if (window.zhongwen.config.fontSize == 'small') {
-                defClass += '-small';
+                // Hanzi
+
+                var hanziClass = 'w-hanzi';
+                if (window.zhongwen.config.fontSize == 'small') {
+                    hanziClass += '-small';
+                }
+
+                if (window.zhongwen.config.font == 'serif') {
+                    hanziClass += ' w-hanzi-serif';
+                } else if (window.zhongwen.config.font == 'handdrawn') {
+                    hanziClass += ' w-hanzi-handdrawn';
+                }
+
+                if(window.zhongwen.config.chars == 'both' || window.zhongwen.config.chars == 'simplified') {
+                    html += '<span class="' + hanziClass + '">' + e[2] + '</span>&nbsp;';
+                }
+                if (window.zhongwen.config.chars == 'both' && e[1] != e[2] || window.zhongwen.config.chars == 'traditional') {
+                    html += '<span class="' + hanziClass + '">' + e[1] + '</span>&nbsp;';
+                }
+
+                // Pinyin
+
+                var pinyinClass = 'w-pinyin';
+                if (window.zhongwen.config.fontSize == 'small') {
+                    pinyinClass += '-small';
+                }
+                var p = this.pinyinAndZhuyin(e[3], showToneColors, pinyinClass);
+
+                if (window.zhongwen.config.pinyin == 'yes') {
+                    html += p[0];
+                }
+
+                // Zhuyin
+
+                if (window.zhongwen.config.zhuyin == 'yes') {
+                    html += '<br>' + p[2];
+                }
+
+                // Definition
+
+                var defClass = 'w-def';
+                if (window.zhongwen.config.fontSize == 'small') {
+                    defClass += '-small';
+                }
+                var translation = e[4].replace(/\//g, '; ');
+
+                html += '<br>';
+
+                if (window.zhongwen.config.definitions == 'yes') {
+                    html += '<span class="' + defClass + '">' + translation + '</span><br>';
+                }
+
+                // Grammar
+                if (window.zhongwen.config.grammar != 'no' && entry.grammar && entry.grammar.index == i) {
+                    html += '<span class="grammar">Press "g" for grammar and usage notes.</span><br>'
+                }
+
+                texts[i] = [e[2], e[1], p[1], translation, e[3]];
             }
-            var translation = e[4].replace(/\//g, '; ');
-
-            html += '<br>';
-
-            if (window.zhongwen.config.definitions == 'yes') {
-                html += '<span class="' + defClass + '">' + translation + '</span><br>';
+            if (entry.more) {
+                html += '&hellip;<br/>';
             }
 
-            // Grammar
-            if (window.zhongwen.config.grammar != 'no' && entry.grammar && entry.grammar.index == i) {
-                html += '<span class="grammar">Press "g" for grammar and usage notes.</span><br>'
-            }
-
-            texts[i] = [e[2], e[1], p[1], translation, e[3]];
+            this.lastFound = texts;
+            this.lastFound.grammar = entry.grammar;
         }
-        if (entry.more) {
-            html += '&hellip;<br/>';
-        }
-
-        this.lastFound = texts;
-        this.lastFound.grammar = entry.grammar;
 
         return html;
     },
@@ -1613,5 +1718,5 @@ chrome.extension.onRequest.addListener(
 
 // When a page first loads, checks to see if it should enable script
 chrome.extension.sendRequest({
-    "type": "enable?"
+    type: 'enable?'
 });
