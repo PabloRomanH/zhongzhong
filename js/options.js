@@ -60,6 +60,14 @@ function loadVals() {
     document.optform.definitions.checked = localStorage['definitions'] == 'yes';
 
     document.optform.grammar.checked = localStorage['grammar'] == 'yes';
+
+    storedValue = localStorage['voice'];
+    if(storedValue == 'zh-CN') {
+        document.optform.voice[0].selected = true;
+    }
+    else { // == 'taiwan'
+        document.optform.font[1].selected = true;
+    }
 }
 
 function storeVals() {
@@ -92,6 +100,9 @@ function storeVals() {
 
     localStorage['grammar'] = document.optform.grammar.checked ? 'yes' : 'no';
     chrome.extension.getBackgroundPage().zhongwenMain.config.grammar = localStorage['grammar'];
+
+    localStorage['voice'] = document.optform.voice.value;
+    chrome.extension.getBackgroundPage().zhongwenMain.config.voice = localStorage['voice'];
 }
 
 $(function() {

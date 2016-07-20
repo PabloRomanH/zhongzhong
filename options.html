@@ -15,7 +15,7 @@
 
         <form id="optform" name="optform">
             <h3>Look&Feel</h3>
-            <b>Theme</b>:
+            <label for="popupcolor">Theme</label>:
             <p>
                 <select id="popupcolor" name="popupcolor" class="form-control">
                     <option value="white">White</option>
@@ -25,14 +25,14 @@
                     <option value="yellow">Yellow</option>
                 </select>
             </p>
-            <b>Font size</b>:
+            <label for="fontSize">Font size</label>:
             <p>
                 <select id="fontSize" name="fontSize" class="form-control">
                     <option value="large">Large</option>
                     <option value="small">Small</option>
                 </select>
             </p>
-            <b>Font</b> for the Chinese characters:
+            <label for="font">Font</label> for the Chinese characters:
             <p>
                 <select id="font" name="font" class="form-control">
                     <option value="sans">Sans serif</option>
@@ -41,7 +41,7 @@
                 </select>
             </p>
             <h3>Display options</h3>
-            <b>Character set</b>. Choose whether to show only simplified characters, traditional characters or both:
+            <label for="chars">Character set</label>. Choose whether to show only simplified characters, traditional characters or both:
             <p>
                 <select id="chars" name="chars" class="form-control">
                     <option value="both">both</option>
@@ -78,8 +78,16 @@
                     <input id="grammar" type="checkbox" name="grammar"> Show grammar and usage notes.
                 </label>
             </p>
+            <h3>Read aloud</h3>
+            <label for="voice">Voice</label> for the read-aloud feature:
+            <p>
+                <select id="voice" name="voice" class="form-control">
+                    <option value="zh-CN">Mainland China</option>
+                    <option value="zh-TW">Taiwan</option>
+                </select>
+            </p>
             <h3>Skritter options</h3>
-            <b>Skritter domain</b>. Change the URL that is used for adding words to your Skritter queue. By default, <code>skritter.com</code> is being used, but for some users <code>skritter.cn</code> might work better (Skritter login required):
+            <label for="skritterTLD">Skritter domain</label>. For some users <code>skritter.cn</code> might work better (Skritter login required):
             <p>
                 <select id="skritterTLD" name="skritterTLD" class="form-control">
                     <option value="com">skritter.com</option>

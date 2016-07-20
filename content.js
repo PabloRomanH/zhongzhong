@@ -309,7 +309,6 @@ var zhongwenContent = {
         }
 
         var i;
-
         switch (ev.keyCode) {
             case 16:	// shift
             case 13:	// enter
@@ -459,6 +458,12 @@ var zhongwenContent = {
                 chrome.extension.sendRequest({
                     type: 'open',
                     url: tatoeba
+                });
+                break;
+            case 86:        // v
+                chrome.extension.sendRequest({
+                    type: 'speak',
+                    text: this.lastFound[0][0]
                 });
                 break;
             case 88:        // x

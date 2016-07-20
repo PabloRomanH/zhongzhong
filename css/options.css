@@ -1,4 +1,8 @@
 
+.container {
+    max-width: 800px;
+}
+
 .savemessage {
     margin: 2em;
     color: #888;

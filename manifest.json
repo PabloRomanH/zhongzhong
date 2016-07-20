@@ -25,7 +25,7 @@
    "manifest_version": 2,
    "name": "Zhongzhong: An improved Chinese Dictionary",
    "options_page": "options.html",
-   "permissions": [ "tabs", "http://*/*", "https://*/*", "contextMenus" ],
+   "permissions": [ "tabs", "http://*/*", "https://*/*", "contextMenus", "tts" ],
    "update_url": "https://clients2.google.com/service/update2/crx",
    "version": "1.0.8",
    "web_accessible_resources": [ "css/*", "js/*", "images/*" ]

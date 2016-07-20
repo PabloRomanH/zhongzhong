@@ -110,6 +110,9 @@ chrome.extension.onRequest.addListener(function(request, sender, response) {
                 zhongwenMain.config.definitions = localStorage.definitions;
             }
             break;
+        case 'speak':
+            chrome.tts.speak(request.text, {'lang': zhongwenMain.config.voice, rate: 0.5});
+            break;
         default:
     // ignore
     }
@@ -132,6 +135,7 @@ initStorage("zhuyin", "no");
 initStorage("pinyin", "yes");
 initStorage("definitions", "yes");
 initStorage("grammar", "yes");
+initStorage("voice", "zh-CN");
 
 zhongwenMain.config = {};
 zhongwenMain.config.css = localStorage.popupcolor;
@@ -144,10 +148,11 @@ zhongwenMain.config.zhuyin = localStorage.zhuyin;
 zhongwenMain.config.pinyin = localStorage.pinyin;
 zhongwenMain.config.definitions = localStorage.definitions;
 zhongwenMain.config.grammar = localStorage.grammar;
+zhongwenMain.config.voice = localStorage.voice;
 
 if (localStorage['enabled'] == 1) {
-   zhongwenMain.loadDictionary();
-   zhongwenMain.enabled = 1;
+    zhongwenMain.loadDictionary();
+    zhongwenMain.enabled = 1;
 } else {
     zhongwenMain.enabled = 0;
 }
