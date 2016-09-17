@@ -512,12 +512,12 @@ var zhongwenContent = {
                 var sel = encodeURIComponent(
                     window.getSelection().toString());
 
-                // http://www.nciku.com/search/all/%E4%B8%AD
-                var nciku = 'http://www.nciku.com/search/all/' + sel;
+                // http://ce.linedict.com/dict.html#/cnen/search?query=%E4%B8%AD
+                var linedict = 'http://ce.linedict.com/dict.html#/cnen/search?query=' + sel;
 
                 chrome.extension.sendRequest({
                     type: 'open',
-                    url: nciku
+                    url: linedict
                 });
                 break;
             case 50:     // 2

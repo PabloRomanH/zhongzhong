@@ -69,8 +69,8 @@ var zhongwenMain = {
     '<tr><td><b>B&nbsp;:</b></td><td>&nbsp;Previous character</td></tr>' +
     '<tr><td><b>M&nbsp;:</b></td><td>&nbsp;Next character</td></tr>' +
     '<tr><td><b>&nbsp;</b></td><td>&nbsp;</td></tr>' +
-    '<tr><td><b>V&nbsp;:</b></td><td style="font-weight: bold;">&nbsp;Read word aloud (NEW)</td></tr>' +
-    '<tr><td><b>Shift/Enter&nbsp;:</b></td><td style="font-weight: bold;">&nbsp;Switch dictionaries (NEW)</td></tr>' +
+    '<tr><td><b>V&nbsp;:</b></td><td style="font-weight: bold;">&nbsp;Read word aloud</td></tr>' +
+    '<tr><td><b>Shift/Enter&nbsp;:</b></td><td style="font-weight: bold;">&nbsp;Switch dictionaries</td></tr>' +
     '<tr><td><b>&nbsp;</b></td><td>&nbsp;</td></tr>' +
     '<tr><td><b>A&nbsp;:</b></td><td>&nbsp;Alternate popup location</td></tr>' +
     '<tr><td><b>Y&nbsp;:</b></td><td>&nbsp;Move popup location down</td></tr>' +
@@ -95,7 +95,7 @@ var zhongwenMain = {
     'Look up selected text in online resource:' +
     '<p>' +
     '<table style="margin: 20px;" cellspacing=5 cellpadding=5>' +
-    '<tr><td><b>Alt + 1&nbsp;:</b></td><td>&nbsp;nciku</td></tr>' +
+    '<tr><td><b>Alt + 1&nbsp;:</b></td><td>&nbsp;LINE Dict (formerly nciku)</td></tr>' +
     '<tr><td><b>Alt + 2&nbsp;:</b></td><td>&nbsp;YellowBridge</td></tr>' +
     '<tr><td><b>Alt + 3&nbsp;:</b></td><td>&nbsp;Dict.cn</td></tr>' +
     '<tr><td><b>Alt + 4&nbsp;:</b></td><td>&nbsp;iCIBA</td></tr>' +
@@ -104,8 +104,8 @@ var zhongwenMain = {
     '<tr><td><b>Alt + 7&nbsp;:</b></td><td>&nbsp;Moedict</td></tr>' +
     '<tr><td><b>Alt + 8&nbsp;:</b></td><td>&nbsp;Baidu Baike</td></tr>' +
     '<tr><td><b>T&nbsp;:</b></td><td>&nbsp;Tatoeba</td></tr>' +
-    '<tr><td><b>W&nbsp;:</b></td><td>&nbsp;Character writing stroke order</td></tr>' +
-    '<tr><td><b>K&nbsp;:</b></td><td>&nbsp;Study character in Koohii.com</td></tr>' +
+    '<tr><td><b>W&nbsp;:</b></td><td style="font-weight: bold;">&nbsp;Character writing stroke order (NEW)</td></tr>' +
+    '<tr><td><b>K&nbsp;:</b></td><td style="font-weight: bold;">&nbsp;Study character in Koohii.com (NEW)</td></tr>' +
     '</table>',
 
     loadDictionary: function() {
