@@ -20,39 +20,48 @@ $(function() {
         datatype: 'local',
         colNames: ['Simplified', 'Traditional', 'Pinyin', 'Definition'],
         colModel: [
-        {
-            name: 'simplified',
-            index: 'simplified'
-        },
+            {
+                name: 'simplified',
+                index: 'simplified'
+            },
 
-        {
-            name: 'traditional',
-            index: 'traditional'
-        },
+            {
+                name: 'traditional',
+                index: 'traditional'
+            },
 
-        {
-            name: 'pinyin',
-            index: 'pinyin'
-        },
+            {
+                name: 'pinyin',
+                index: 'pinyin'
+            },
 
-        {
-            name: 'definition',
-            index: 'definition',
-            cellattr: function (rowId, tv, rawObject, cm, rdata) {
-                return 'style="white-space: normal;'
+            {
+                name: 'definition',
+                index: 'definition',
+                cellattr: function (rowId, tv, rawObject, cm, rdata) {
+                    return 'style="white-space: normal;'
+                }
+            },
+        ],
+        multiselect: true,
+        rowNum: 1000,
+        rowList:[10,20,30],
+        viewrecords: true,
+        gridview: true,
+        caption: 'Zhongzhong: My Words',
+        autowidth: true,
+        height: '100%',
+        emptyrecords: "No words",
+        loadui: 'disable',
+        onSelectRow: function(id) {
+            var selected = jQuery("#words").getGridParam('selarrrow');
+
+            if (selected.length > 0) {
+                jQuery("#savebutton").removeAttr("disabled");
+            } else {
+                jQuery("#savebutton").attr("disabled", true);
             }
         },
-    ],
-    multiselect: true,
-    rowNum: 1000,
-    rowList:[10,20,30],
-    viewrecords: true,
-    gridview: true,
-    caption: 'Zhongzhong: My Words',
-    autowidth: true,
-    height: '100%',
-    emptyrecords: "No words",
-    loadui: 'disable'
     });
 
 $('#savebutton').click(function(e) {
