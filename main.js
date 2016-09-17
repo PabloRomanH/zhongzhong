@@ -104,6 +104,8 @@ var zhongwenMain = {
     '<tr><td><b>Alt + 7&nbsp;:</b></td><td>&nbsp;Moedict</td></tr>' +
     '<tr><td><b>Alt + 8&nbsp;:</b></td><td>&nbsp;Baidu Baike</td></tr>' +
     '<tr><td><b>T&nbsp;:</b></td><td>&nbsp;Tatoeba</td></tr>' +
+    '<tr><td><b>W&nbsp;:</b></td><td>&nbsp;Character writing stroke order</td></tr>' +
+    '<tr><td><b>K&nbsp;:</b></td><td>&nbsp;Study character in Koohii.com</td></tr>' +
     '</table>',
 
     loadDictionary: function() {

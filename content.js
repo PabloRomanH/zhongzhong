@@ -368,7 +368,14 @@ var zhongwenContent = {
                     });
                 }
                 break;
+            case 75:        // k
+                var unicode = window.getSelection().toString()[0];
+                var rtk = 'http://kanji.koohii.com/study/kanji/' + unicode;
 
+                chrome.extension.sendRequest({
+                    type: 'open',
+                    url: rtk
+                });
             case 77:        // m
                 window.zhongwen.uofsNext = 1;
             // falls through
@@ -466,6 +473,14 @@ var zhongwenContent = {
                     text: this.lastFound[0][0]
                 });
                 break;
+            case 87:        // w
+                var unicode = window.getSelection().toString().charCodeAt(0);
+                var strokeorder = 'http://www.mdbg.net/chindict/chindict_ajax.php?c=cdas&i=' + unicode;
+
+                chrome.extension.sendRequest({
+                    type: 'open',
+                    url: strokeorder
+                });
             case 88:        // x
                 this.altView = 0;
                 window.zhongwen.popY -= 20;
