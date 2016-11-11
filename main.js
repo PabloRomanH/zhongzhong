@@ -104,7 +104,6 @@ var zhongwenMain = {
     '<tr><td><b>Alt + 7&nbsp;:</b></td><td>&nbsp;Moedict</td></tr>' +
     '<tr><td><b>Alt + 8&nbsp;:</b></td><td>&nbsp;Baidu Baike</td></tr>' +
     '<tr><td><b>T&nbsp;:</b></td><td>&nbsp;Tatoeba</td></tr>' +
-    '<tr><td><b>W&nbsp;:</b></td><td style="font-weight: bold;">&nbsp;Character writing stroke order (NEW)</td></tr>' +
     '<tr><td><b>K&nbsp;:</b></td><td style="font-weight: bold;">&nbsp;Study character in Koohii.com (NEW)</td></tr>' +
     '</table>',
 

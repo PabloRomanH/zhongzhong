@@ -1,6 +1,6 @@
 /*
         Zhongzhong - A Chinese-English Popup Dictionary
-        Copyright (C) 2015 Pablo Roman
+        Copyright (C) 2016 Pablo Roman
         https://chrome.google.com/webstore/detail/dggcgdjndddfmcfoipccicfoajmciacf
 
         ---
@@ -473,14 +473,6 @@ var zhongwenContent = {
                     text: this.lastFound[0][0]
                 });
                 break;
-            case 87:        // w
-                var unicode = window.getSelection().toString().charCodeAt(0);
-                var strokeorder = 'http://www.mdbg.net/chindict/chindict_ajax.php?c=cdas&i=' + unicode;
-
-                chrome.extension.sendRequest({
-                    type: 'open',
-                    url: strokeorder
-                });
             case 88:        // x
                 this.altView = 0;
                 window.zhongwen.popY -= 20;
@@ -1086,13 +1078,22 @@ var zhongwenContent = {
 
             html += '<table class="k-main-tb"><tr><td valign="top">';
             html += box;
+
+            let hanziChars;
             if (entry.simplified) {
-                html += '<span class="k-hanzi">' + entry.simplified + ' ' + entry.hanzi + '</span><br/>';
+                hanziChars = entry.simplified + ' ' + entry.hanzi;
             } else if (entry.traditional) {
-                html += '<span class="k-hanzi">' + entry.hanzi + ' ' + entry.traditional + '</span><br/>';
+                hanziChars = entry.hanzi + ' ' + entry.traditional;
             } else {
-                html += '<span class="k-hanzi">' + entry.hanzi + '</span><br/>';
+                hanziChars = entry.hanzi;
             }
+            html += '<span class="k-hanzi">' + hanziChars + ' </span>';
+
+            var unicode = window.getSelection().toString().charCodeAt(0);
+            var strokeorder = 'https://www.mdbg.net/chindict/rsc/img/stroke_anim/' + unicode + '.gif';
+            html += '<img alt="Charater stroke order" style="display: inline-block; width: 48px; height: 48px; font-size: 48px; vertical-align: bottom;" src="' + strokeorder + '" onerror="this.style = \'display: none;\'">';
+            html += '<br/>'
+
             html += '<div class="k-def">' + entry.definition + '</div>';
 
             // Pinyin
