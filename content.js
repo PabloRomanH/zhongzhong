@@ -51,19 +51,12 @@
  */
 
 var zhongwenContent = {
-
-    dict: 0,
-
+    dictIndex: 0,
     altView: 0,
-
     lastFound: null,
-
     keysDown: [],
-
-    // Hack because SelEnd can't be sent in messages
-    lastSelEnd:  [],
-    // Hack because ro was coming out always 0 for some reason.
-    lastRo: 0,
+    lastSelEnd: [], // Hack because SelEnd can't be sent in messages
+    lastRo: 0, // Hack because ro was coming out always 0 for some reason.
 
     //Adds the listeners and stuff.
     enableTab: function() {
@@ -312,7 +305,7 @@ var zhongwenContent = {
         switch (ev.keyCode) {
             case 16:	// shift
             case 13:	// enter
-                this.dict = (this.dict + 1) % 2;
+                this.dictIndex = (this.dictIndex + 1) % 2;
                 this.show(window.zhongwen);
                 break;
             case 27:        // esc
@@ -747,7 +740,7 @@ var zhongwenContent = {
         chrome.extension.sendRequest({
             type: 'search',
             text: text,
-            dict: this.dict
+            dict: this._dictFromIndex(this.dictIndex)
         },
         zhongwenContent.processEntry);
 
@@ -861,8 +854,7 @@ var zhongwenContent = {
         return div;
     },
 
-    onMouseMove:
-    function(ev) {
+    onMouseMove: function(ev) {
         zhongwenContent._onMouseMove(ev);
     },
     _onMouseMove: function(ev) {
@@ -1023,168 +1015,192 @@ var zhongwenContent = {
         ['rshkeyword', 'RSH keyword']
     ],
 
+    _dictFromIndex: function (idx) {
+      if (window.zhongwen.config.dicts === 'hanEng') {
+        return (idx + 1) % 2;
+      } else {
+        return idx;
+      }
+    },
+
     makeHtml: function(entry, showToneColors) {
-        var e;
-        var html = '';
-        var texts = [];
-
         if (entry == null) return '';
+        let dicts = [this.makeHtmlEnglishDict, this.makeHtmlHanzi];
 
-        if (this.dict === 1) {
-            var k;
-            var nums;
+        return dicts[this._dictFromIndex(this.dictIndex)].bind(zhongwenContent)(entry, showToneColors);
+    },
 
-            var k = entry.hsk !== '' ? ('HSK grade<br/>' + entry.hsk) : 'Not in HSK<br/>';
+    makeHtmlEnglishDict: function(entry, showToneColors) {
+        var html = '';
+        let texts = [];
+        for (var i = 0; i < entry.data.length; ++i) {
+            let e = entry.data[i][0].match(/^([^\s]+?)\s+([^\s]+?)\s+\[(.*?)\]?\s*\/(.+)\//);
+            if (!e) continue;
 
-            var radical = String.fromCharCode(12031 + parseInt(entry.radical));
-            var box = '<table class="k-abox-tb"><tr>' +
-                '<td class="k-abox-r">radical<br/>' + radical + ' ' + entry.radical + '</td>' +
-                '<td class="k-abox-g">' + k + '</td>' +
-                '</tr><tr>' +
-                '<td class="k-abox-f">freq<br/>' + (entry.freq ? entry.freq : '-') + '</td>' +
-                '<td class="k-abox-s">strokes<br/>' + entry.strokes + '</td>' +
-                '</tr></table>';
+            // Hanzi
 
-
-            if (entry.variant || entry.specializedVariant) {
-                box += '<table class="k-bbox-tb">';
-                j = 1;
-                if (entry.variant) {
-                    c = ' class="k-bbox-' + (j ^= 1);
-                    box += '<tr><td' + c + 'b">Variant</td>' +
-                            '<td' + c + 'b">' + entry.variant + '</td></tr>';
-                }
-                if (entry.specializedVariant) {
-                    c = ' class="k-bbox-' + (j ^= 1);
-                    box += '<tr><td' + c + 'b">Specialized variant</td>' +
-                            '<td' + c + 'b">' + entry.specializedVariant + '</td></tr>';
-                }
-                box += '</table>';
+            var hanziClass = 'w-hanzi';
+            if (window.zhongwen.config.fontSize == 'small') {
+                hanziClass += '-small';
             }
 
-            nums = '';
-            j = 0;
-
-            for (i = 0; i < this.numList.length; i++) {
-                c = this.numList[i][0];
-                s = entry.dict[c];
-                c = ' class="k-mix-td' + (j ^= 1) + '"';
-                nums += '<tr><td' + c + '>' + this.numList[i][1] + '</td><td' + c + '>' + (s ? s : '-') + '</td></tr>';
+            if (window.zhongwen.config.font == 'serif') {
+                hanziClass += ' w-hanzi-serif';
+            } else if (window.zhongwen.config.font == 'handdrawn') {
+                hanziClass += ' w-hanzi-handdrawn';
             }
-            var code = entry.hanzi.charCodeAt(0).toString(16).toUpperCase();
-            c = ' class="k-mix-td' + (j ^= 1) + '"';
-            nums += '<tr><td' + c + '>Unicode</td><td' + c + '>' + code + '</td></tr>';
-            if (nums.length) nums = '<table class="k-mix-tb">' + nums + '</table>';
 
-            html += '<table class="k-main-tb"><tr><td valign="top">';
-            html += box;
-
-            let hanziChars;
-            if (entry.simplified) {
-                hanziChars = entry.simplified + ' ' + entry.hanzi;
-            } else if (entry.traditional) {
-                hanziChars = entry.hanzi + ' ' + entry.traditional;
-            } else {
-                hanziChars = entry.hanzi;
+            if(window.zhongwen.config.chars == 'both' || window.zhongwen.config.chars == 'simplified') {
+                html += '<span class="' + hanziClass + '">' + e[2] + '</span>&nbsp;';
             }
-            html += '<span class="k-hanzi">' + hanziChars + ' </span>';
-
-            var unicode = window.getSelection().toString().charCodeAt(0);
-            var strokeorder = 'https://www.mdbg.net/chindict/rsc/img/stroke_anim/' + unicode + '.gif';
-            html += '<img alt="Charater stroke order" style="display: inline-block; width: 48px; height: 48px; font-size: 48px; vertical-align: bottom;" src="' + strokeorder + '" onerror="this.style = \'display: none;\'">';
-            html += '<br/>'
-
-            html += '<div class="k-def">' + entry.definition + '</div>';
+            if (window.zhongwen.config.chars == 'both' && e[1] != e[2] || window.zhongwen.config.chars == 'traditional') {
+                html += '<span class="' + hanziClass + '">' + e[1] + '</span>&nbsp;';
+            }
 
             // Pinyin
+
             var pinyinClass = 'w-pinyin';
             if (window.zhongwen.config.fontSize == 'small') {
                 pinyinClass += '-small';
             }
-            var p = this.pinyinAndZhuyin(entry.pinyin, showToneColors, pinyinClass);
+            var p = this.pinyinAndZhuyin(e[3], showToneColors, pinyinClass);
 
             if (window.zhongwen.config.pinyin == 'yes') {
-                html += p[0] + '<br>';
+                html += p[0];
             }
 
             // Zhuyin
+
             if (window.zhongwen.config.zhuyin == 'yes') {
-                html += p[2] + '<br>';
+                html += '<br>' + p[2];
             }
 
-            html += '<br></td></tr><tr><td>' + nums + '</td></tr></table>';
-        } else if (this.dict === 0) {
-            for (var i = 0; i < entry.data.length; ++i) {
-                e = entry.data[i][0].match(/^([^\s]+?)\s+([^\s]+?)\s+\[(.*?)\]?\s*\/(.+)\//);
-                if (!e) continue;
+            // Definition
 
-                // Hanzi
-
-                var hanziClass = 'w-hanzi';
-                if (window.zhongwen.config.fontSize == 'small') {
-                    hanziClass += '-small';
-                }
-
-                if (window.zhongwen.config.font == 'serif') {
-                    hanziClass += ' w-hanzi-serif';
-                } else if (window.zhongwen.config.font == 'handdrawn') {
-                    hanziClass += ' w-hanzi-handdrawn';
-                }
-
-                if(window.zhongwen.config.chars == 'both' || window.zhongwen.config.chars == 'simplified') {
-                    html += '<span class="' + hanziClass + '">' + e[2] + '</span>&nbsp;';
-                }
-                if (window.zhongwen.config.chars == 'both' && e[1] != e[2] || window.zhongwen.config.chars == 'traditional') {
-                    html += '<span class="' + hanziClass + '">' + e[1] + '</span>&nbsp;';
-                }
-
-                // Pinyin
-
-                var pinyinClass = 'w-pinyin';
-                if (window.zhongwen.config.fontSize == 'small') {
-                    pinyinClass += '-small';
-                }
-                var p = this.pinyinAndZhuyin(e[3], showToneColors, pinyinClass);
-
-                if (window.zhongwen.config.pinyin == 'yes') {
-                    html += p[0];
-                }
-
-                // Zhuyin
-
-                if (window.zhongwen.config.zhuyin == 'yes') {
-                    html += '<br>' + p[2];
-                }
-
-                // Definition
-
-                var defClass = 'w-def';
-                if (window.zhongwen.config.fontSize == 'small') {
-                    defClass += '-small';
-                }
-                var translation = e[4].replace(/\//g, '; ');
-
-                html += '<br>';
-
-                if (window.zhongwen.config.definitions == 'yes') {
-                    html += '<span class="' + defClass + '">' + translation + '</span><br>';
-                }
-
-                // Grammar
-                if (window.zhongwen.config.grammar != 'no' && entry.grammar && entry.grammar.index == i) {
-                    html += '<span class="grammar">Press "g" for grammar and usage notes.</span><br>'
-                }
-
-                texts[i] = [e[2], e[1], p[1], translation, e[3]];
+            var defClass = 'w-def';
+            if (window.zhongwen.config.fontSize == 'small') {
+                defClass += '-small';
             }
-            if (entry.more) {
-                html += '&hellip;<br/>';
+            var translation = e[4].replace(/\//g, '; ');
+
+            html += '<br>';
+
+            if (window.zhongwen.config.definitions == 'yes') {
+                html += '<span class="' + defClass + '">' + translation + '</span><br>';
             }
 
-            this.lastFound = texts;
-            this.lastFound.grammar = entry.grammar;
+            // Grammar
+            if (window.zhongwen.config.grammar != 'no' && entry.grammar && entry.grammar.index == i) {
+                html += '<span class="grammar">Press "g" for grammar and usage notes.</span><br>'
+            }
+
+            texts[i] = [e[2], e[1], p[1], translation, e[3]];
+        }
+        if (entry.more) {
+            html += '&hellip;<br/>';
         }
 
+        this.lastFound = texts;
+        this.lastFound.grammar = entry.grammar;
+
+        return html;
+    },
+
+    makeHtmlHanzi: function(entry, showToneColors) {
+        var html = '';
+        var k;
+        var nums;
+
+        var k = entry.hsk !== '' ? ('HSK grade<br/>' + entry.hsk) : 'Not in HSK<br/>';
+
+        var radical = String.fromCharCode(12031 + parseInt(entry.radical));
+        var box = '<table class="k-abox-tb"><tr>' +
+            '<td class="k-abox-r">radical<br/>' + radical + ' ' + entry.radical + '</td>' +
+            '<td class="k-abox-g">' + k + '</td>' +
+            '</tr><tr>' +
+            '<td class="k-abox-f">freq<br/>' + (entry.freq ? entry.freq : '-') + '</td>' +
+            '<td class="k-abox-s">strokes<br/>' + entry.strokes + '</td>' +
+            '</tr></table>';
+
+        var numList = [
+            ['fourcorner', 'Four Corner Code'],
+            ['cangjie', 'Cangjie input code'],
+            ['hanyu', 'Hanyu Da Zidian'],
+            ['kangxi', 'Kang Xi'],
+            ['phonetic', 'Ten Thousand Characters'],
+            ['rth', 'Remembering the Traditional Hanzi'],
+            ['rthkeyword', 'RTH keyword'],
+            ['rsh', 'Remembering the Simplified Hanzi'],
+            ['rshkeyword', 'RSH keyword']
+        ];
+
+        if (entry.variant || entry.specializedVariant) {
+            box += '<table class="k-bbox-tb">';
+            j = 1;
+            if (entry.variant) {
+                c = ' class="k-bbox-' + (j ^= 1);
+                box += '<tr><td' + c + 'b">Variant</td>' +
+                        '<td' + c + 'b">' + entry.variant + '</td></tr>';
+            }
+            if (entry.specializedVariant) {
+                c = ' class="k-bbox-' + (j ^= 1);
+                box += '<tr><td' + c + 'b">Specialized variant</td>' +
+                        '<td' + c + 'b">' + entry.specializedVariant + '</td></tr>';
+            }
+            box += '</table>';
+        }
+
+        nums = '';
+        j = 0;
+
+        for (i = 0; i < numList.length; i++) {
+            c = numList[i][0];
+            s = entry.dict[c];
+            c = ' class="k-mix-td' + (j ^= 1) + '"';
+            nums += '<tr><td' + c + '>' + numList[i][1] + '</td><td' + c + '>' + (s ? s : '-') + '</td></tr>';
+        }
+        var code = entry.hanzi.charCodeAt(0).toString(16).toUpperCase();
+        c = ' class="k-mix-td' + (j ^= 1) + '"';
+        nums += '<tr><td' + c + '>Unicode</td><td' + c + '>' + code + '</td></tr>';
+        if (nums.length) nums = '<table class="k-mix-tb">' + nums + '</table>';
+
+        html += '<table class="k-main-tb"><tr><td valign="top">';
+        html += box;
+
+        let hanziChars;
+        if (entry.simplified) {
+            hanziChars = entry.simplified + ' ' + entry.hanzi;
+        } else if (entry.traditional) {
+            hanziChars = entry.hanzi + ' ' + entry.traditional;
+        } else {
+            hanziChars = entry.hanzi;
+        }
+        html += '<span class="k-hanzi">' + hanziChars + ' </span>';
+
+        var unicode = window.getSelection().toString().charCodeAt(0);
+        var strokeorder = 'https://www.mdbg.net/chindict/rsc/img/stroke_anim/' + unicode + '.gif';
+        html += '<img alt="Charater stroke order" style="display: inline-block; width: 48px; height: 48px; font-size: 48px; vertical-align: bottom;" src="' + strokeorder + '" onerror="this.style = \'display: none;\'">';
+        html += '<br/>'
+
+        html += '<div class="k-def">' + entry.definition + '</div>';
+
+        // Pinyin
+        var pinyinClass = 'w-pinyin';
+        if (window.zhongwen.config.fontSize == 'small') {
+            pinyinClass += '-small';
+        }
+        var p = this.pinyinAndZhuyin(entry.pinyin, showToneColors, pinyinClass);
+
+        if (window.zhongwen.config.pinyin == 'yes') {
+            html += p[0] + '<br>';
+        }
+
+        // Zhuyin
+        if (window.zhongwen.config.zhuyin == 'yes') {
+            html += p[2] + '<br>';
+        }
+
+        html += '<br></td></tr><tr><td>' + nums + '</td></tr></table>';
         return html;
     },
 

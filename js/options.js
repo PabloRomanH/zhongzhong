@@ -53,6 +53,14 @@ function loadVals() {
         document.optform.chars[2].selected = true;
     }
 
+    storedValue = localStorage['dicts'];
+    if(storedValue == 'engHan') {
+        document.optform.dicts[0].selected = true;
+    }
+    else if(storedValue == 'hanEng') {
+        document.optform.dicts[1].selected = true;
+    }
+
     document.optform.zhuyin.checked = localStorage['zhuyin'] == 'yes';
 
     document.optform.pinyin.checked = localStorage['pinyin'] == 'yes';
@@ -88,6 +96,9 @@ function storeVals() {
 
     localStorage['chars'] = document.optform.chars.value;
     chrome.extension.getBackgroundPage().zhongwenMain.config.chars = localStorage['chars'];
+
+    localStorage['dicts'] = document.optform.dicts.value;
+    chrome.extension.getBackgroundPage().zhongwenMain.config.dicts = localStorage['dicts'];
 
     localStorage['zhuyin'] = document.optform.zhuyin.checked ? 'yes' : 'no';
     chrome.extension.getBackgroundPage().zhongwenMain.config.zhuyin = localStorage['zhuyin'];

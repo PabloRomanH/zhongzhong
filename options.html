@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
@@ -14,30 +15,12 @@
         </div>
 
         <form id="optform" name="optform">
-            <h3>Look&Feel</h3>
-            <label for="popupcolor">Theme</label>:
+            <h3>Dictionaries</h3>
+            <label for="dicts">Default dictionary</label>. Change dictionary used by default (change with Shift or Return key):
             <p>
-                <select id="popupcolor" name="popupcolor" class="form-control">
-                    <option value="white">White</option>
-                    <option value="blue">Blue</option>
-                    <option value="lightblue">Light Blue</option>
-                    <option value="black">Black</option>
-                    <option value="yellow">Yellow</option>
-                </select>
-            </p>
-            <label for="fontSize">Font size</label>:
-            <p>
-                <select id="fontSize" name="fontSize" class="form-control">
-                    <option value="large">Large</option>
-                    <option value="small">Small</option>
-                </select>
-            </p>
-            <label for="font">Font</label> for the Chinese characters:
-            <p>
-                <select id="font" name="font" class="form-control">
-                    <option value="sans">Sans serif</option>
-                    <option value="serif">Serif</option>
-                    <option value="handdrawn">Hand-drawn</option>
+                <select id="dicts" name="dicts" class="form-control">
+                    <option value="engHan">Chinese-English</option>
+                    <option value="hanEng">Character info</option>
                 </select>
             </p>
             <h3>Display options</h3>
@@ -84,6 +67,32 @@
                 <select id="voice" name="voice" class="form-control">
                     <option value="zh-CN">Mainland China</option>
                     <option value="zh-TW">Taiwan</option>
+                </select>
+            </p>
+            <h3>Look&amp;Feel</h3>
+            <label for="popupcolor">Theme</label>:
+            <p>
+                <select id="popupcolor" name="popupcolor" class="form-control">
+                    <option value="white">White</option>
+                    <option value="blue">Blue</option>
+                    <option value="lightblue">Light Blue</option>
+                    <option value="black">Black</option>
+                    <option value="yellow">Yellow</option>
+                </select>
+            </p>
+            <label for="fontSize">Font size</label>:
+            <p>
+                <select id="fontSize" name="fontSize" class="form-control">
+                    <option value="large">Large</option>
+                    <option value="small">Small</option>
+                </select>
+            </p>
+            <label for="font">Font</label> for the Chinese characters:
+            <p>
+                <select id="font" name="font" class="form-control">
+                    <option value="sans">Sans serif</option>
+                    <option value="serif">Serif</option>
+                    <option value="handdrawn">Hand-drawn</option>
                 </select>
             </p>
             <h3>Skritter options</h3>
