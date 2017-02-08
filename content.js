@@ -1550,6 +1550,7 @@ var zhongwenContent = {
         'nu': '\u310b\u3128',
         'nu:': '\u310b\u3129',
         'nuan': '\u310b\u3128\u3122',
+        'nun': '\u310b\u3128\u3123',
         'nu:e': '\u310b\u3129\u311d',
         'nuo': '\u310b\u3128\u311b',
         'ou': '\u3121',
