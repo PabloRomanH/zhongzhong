@@ -1,3 +1,4 @@
+#!/usr/bin/python
 
 def utf8len(s):
     return len(s.decode('utf-8'))
