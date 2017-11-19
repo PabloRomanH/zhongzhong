@@ -1179,7 +1179,7 @@ var zhongwenContent = {
 
         var unicode = window.getSelection().toString().charCodeAt(0);
         var strokeorder = 'https://www.mdbg.net/chindict/rsc/img/stroke_anim/' + unicode + '.gif';
-        html += '<img alt="Charater stroke order" style="display: inline-block; width: 48px; height: 48px; font-size: 48px; vertical-align: bottom;" src="' + strokeorder + '" onerror="this.style = \'display: none;\'">';
+        html += '<img alt="Charater stroke order" style="display: inline-block; width: 48px; height: 48px; font-size: 48px; vertical-align: middle;" src="' + strokeorder + '" onerror="this.style = \'display: none;\'">';
         html += '<br/>'
 
         html += '<div class="k-def">' + entry.definition + '</div>';
