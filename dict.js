@@ -235,6 +235,7 @@ zhongwenDict.prototype = {
             dict: {
                 fourcorner: data.kFourCornerCode,
                 cangjie: data.kCangjie,
+                cangjiech: data.kCangjieCh,
                 hanyu: data.kHanYu,
                 kangxi: data.kKangXi,
                 phonetic: data.kPhonetic,

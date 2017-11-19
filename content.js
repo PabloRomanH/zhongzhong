@@ -1006,6 +1006,7 @@ var zhongwenContent = {
     numList: [
         ['fourcorner', 'Four Corner Code'],
         ['cangjie', 'Cangjie input code'],
+        ['cangjiech', 'Cangjie input code (Chinese)'],
         ['hanyu', 'Hanyu Da Zidian'],
         ['kangxi', 'Kang Xi'],
         ['phonetic', 'Ten Thousand Characters'],
@@ -1125,6 +1126,7 @@ var zhongwenContent = {
         var numList = [
             ['fourcorner', 'Four Corner Code'],
             ['cangjie', 'Cangjie input code'],
+            ['cangjiech', 'Cangjie input code (Chinese)'],
             ['hanyu', 'Hanyu Da Zidian'],
             ['kangxi', 'Kang Xi'],
             ['phonetic', 'Ten Thousand Characters'],
