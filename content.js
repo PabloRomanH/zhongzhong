@@ -513,7 +513,7 @@ var zhongwenContent = {
                     window.getSelection().toString());
 
                 // http://www.yellowbridge.com/chinese/wordsearch.php?searchMode=C&word=%E4%B8%AD
-                var yellow = 'http://www.yellowbridge.com/chinese/wordsearch.php?searchMode=C&word=' + sel;
+                var yellow = 'https://www.yellowbridge.com/chinese/wordsearch.php?searchMode=C&word=' + sel;
 
                 chrome.extension.sendRequest({
                     type: 'open',
@@ -573,7 +573,8 @@ var zhongwenContent = {
                     window.getSelection().toString());
 
                 // http://jukuu.com/show-%E8%AF%8D%E5%85%B8-0.html
-                var jukuu = 'http://jukuu.com/show-' + sel + '-0.html';
+                // var jukuu = 'http://jukuu.com/show-' + sel + '-0.html';
+                var jukuu = 'http://www.jukuu.com';
 
                 chrome.extension.sendRequest({
                     type: 'open',
