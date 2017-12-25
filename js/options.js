@@ -74,7 +74,7 @@ function loadVals() {
         document.optform.voice[0].selected = true;
     }
     else { // == 'taiwan'
-        document.optform.font[1].selected = true;
+        document.optform.voice[1].selected = true;
     }
 }
 
