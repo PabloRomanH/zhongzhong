@@ -15,6 +15,15 @@ function loadVals() {
 
     document.optform.tonecolors.checked = localStorage['tonecolors'] == 'yes';
 
+    document.optform.tone1.value = localStorage['tone1'] || "#F00";
+    document.optform.tone1.style.color = document.optform.tone1.value;
+    document.optform.tone2.value = localStorage['tone2'] || "#F80";
+    document.optform.tone2.style.color = document.optform.tone2.value;
+    document.optform.tone3.value = localStorage['tone3'] || "#0F0";
+    document.optform.tone3.style.color = document.optform.tone3.value;
+    document.optform.tone4.value = localStorage['tone4'] || "#00F";
+    document.optform.tone4.style.color = document.optform.tone4.value;
+
     storedValue = localStorage['fontSize'];
     if(storedValue == 'small') {
         document.optform.fontSize[1].selected = true;
@@ -84,6 +93,15 @@ function storeVals() {
 
     localStorage['tonecolors'] = document.optform.tonecolors.checked ? 'yes' : 'no';
     chrome.extension.getBackgroundPage().zhongwenMain.config.tonecolors = localStorage['tonecolors'];
+    
+    localStorage['tone1'] = document.optform.tone1.value;
+    localStorage['tone2'] = document.optform.tone2.value;
+    localStorage['tone3'] = document.optform.tone3.value;
+    localStorage['tone4'] = document.optform.tone4.value;
+    chrome.extension.getBackgroundPage().zhongwenMain.config.tones = [localStorage['tone1'],
+                                                                      localStorage['tone2'],
+                                                                      localStorage['tone3'],
+                                                                      localStorage['tone4']];
 
     localStorage['fontSize'] = document.optform.fontSize.value;
     chrome.extension.getBackgroundPage().zhongwenMain.config.fontSize = localStorage['fontSize'];
@@ -119,6 +137,7 @@ function storeVals() {
 $(function() {
     $('select').change(storeVals);
     $('input').change(storeVals);
+    $('.tone-color').change(function(event){event.target.style.color = event.target.value;});
 });
 
 window.onload = loadVals;

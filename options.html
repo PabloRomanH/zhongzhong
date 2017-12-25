@@ -42,10 +42,28 @@
                 Turn on and off the Pinyin phonetic symbols.
             </p>
             <p>
-                <label>
-                    <input id="tonecolors" type="checkbox" name="tonecolors"> Show tone colors.
-                </label>
-                Turn colors for the Pinyin syllables on and off. <span class="red">Red = first tone</span>, <span class="orange">Orange = second tone</span>, <span class="green">Green = third tone</span>, <span class="blue">Blue = fourth tone</span>.
+            <label>
+                <input id="tonecolors" type="checkbox" name="tonecolors" class="tone-color"> Show tone colors.
+            </label>
+            Turn colors for the Pinyin syllables on and off.
+            <div class="row">
+                <div class="col-xs-3">
+                    First tone:
+                    <input type="text" id="tone1" class="form-control tone-color" value="#F00">
+                </div>
+                <div class="col-xs-3">
+                    Second tone:
+                    <input type="text" id="tone2" class="form-control tone-color" value="#F80">
+                </div>
+                <div class="col-xs-3">
+                    Third tone:
+                    <input type="text" id="tone3" class="form-control tone-color" value="#0F0">
+                </div>
+                <div class="col-xs-3">
+                    Fourth tone:
+                    <input type="text" id="tone4" class="form-control tone-color" value="#00F">
+                </div>
+            </div>
             </p>
             <p>
                 <label>

@@ -1298,7 +1298,7 @@ var zhongwenContent = {
             }
             var m = this.parse(syllable);
             if (showToneColors) {
-                html += '<span class="' + pinyinClass + ' tone' + m[4] + '">';
+                html += '<span class="' + pinyinClass + '" style="color: ' + window.zhongwen.config.tones[m[4] - 1] + '">';
             } else {
                 html += '<span class="' + pinyinClass + '">';
             }
