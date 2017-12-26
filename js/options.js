@@ -23,6 +23,8 @@ function loadVals() {
     document.optform.tone3.style.color = document.optform.tone3.value;
     document.optform.tone4.value = localStorage['tone4'] || "#00F";
     document.optform.tone4.style.color = document.optform.tone4.value;
+    document.optform.tone5.value = localStorage['tone5'] || "#A0A0A0";
+    document.optform.tone5.style.color = document.optform.tone5.value;
 
     storedValue = localStorage['fontSize'];
     if(storedValue == 'small') {
@@ -98,10 +100,12 @@ function storeVals() {
     localStorage['tone2'] = document.optform.tone2.value;
     localStorage['tone3'] = document.optform.tone3.value;
     localStorage['tone4'] = document.optform.tone4.value;
+    localStorage['tone5'] = document.optform.tone5.value;
     chrome.extension.getBackgroundPage().zhongwenMain.config.tones = [localStorage['tone1'],
                                                                       localStorage['tone2'],
                                                                       localStorage['tone3'],
-                                                                      localStorage['tone4']];
+                                                                      localStorage['tone4'],
+                                                                      localStorage['tone5']];
 
     localStorage['fontSize'] = document.optform.fontSize.value;
     chrome.extension.getBackgroundPage().zhongwenMain.config.fontSize = localStorage['fontSize'];
@@ -137,7 +141,27 @@ function storeVals() {
 $(function() {
     $('select').change(storeVals);
     $('input').change(storeVals);
-    $('.tone-color').change(function(event){event.target.style.color = event.target.value;});
+    $('input').blur(storeVals);
+    $('.tone-color').change(setTextColorToValue);
+    $('.tone-color').blur(setTextColorToValue);
+
+    $('#resettonecolors').click(function(event) {
+      localStorage['tone1'] = document.optform.tone1.value = '#F00';
+      document.optform.tone1.style.color = document.optform.tone1.value;
+      localStorage['tone2'] = document.optform.tone2.value = '#F80';
+      document.optform.tone2.style.color = document.optform.tone2.value;
+      localStorage['tone3'] = document.optform.tone3.value = '#0F0';
+      document.optform.tone3.style.color = document.optform.tone3.value;
+      localStorage['tone4'] = document.optform.tone4.value = '#00F';
+      document.optform.tone4.style.color = document.optform.tone4.value;
+      localStorage['tone5'] = document.optform.tone5.value = '#A0A0A0';
+      document.optform.tone5.style.color = document.optform.tone5.value;
+    });
 });
+
+function setTextColorToValue(event) {
+  event.target.style.color = event.target.value;
+}
+
 
 window.onload = loadVals;

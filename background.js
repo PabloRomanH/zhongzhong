@@ -141,6 +141,7 @@ initStorage("tone1", "#F00");
 initStorage("tone2", "#F80");
 initStorage("tone3", "#0F0");
 initStorage("tone4", "#00F");
+initStorage("tone5", "#A0A0A0");
 
 
 zhongwenMain.config = {};
@@ -159,7 +160,8 @@ zhongwenMain.config.voice = localStorage.voice;
 zhongwenMain.config.tones = [localStorage.tone1,
                              localStorage.tone2,
                              localStorage.tone3,
-                             localStorage.tone4];
+                             localStorage.tone4,
+                             localStorage.tone5];
 
 
 if (localStorage['enabled'] == 1) {
