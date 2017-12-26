@@ -137,6 +137,11 @@ initStorage("pinyin", "yes");
 initStorage("definitions", "yes");
 initStorage("grammar", "yes");
 initStorage("voice", "zh-CN");
+initStorage("tone1", "#F00");
+initStorage("tone2", "#F80");
+initStorage("tone3", "#0F0");
+initStorage("tone4", "#00F");
+
 
 zhongwenMain.config = {};
 zhongwenMain.config.css = localStorage.popupcolor;
@@ -151,6 +156,11 @@ zhongwenMain.config.pinyin = localStorage.pinyin;
 zhongwenMain.config.definitions = localStorage.definitions;
 zhongwenMain.config.grammar = localStorage.grammar;
 zhongwenMain.config.voice = localStorage.voice;
+zhongwenMain.config.tones = [localStorage.tone1,
+                             localStorage.tone2,
+                             localStorage.tone3,
+                             localStorage.tone4];
+
 
 if (localStorage['enabled'] == 1) {
     zhongwenMain.loadDictionary();

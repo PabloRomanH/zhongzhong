@@ -93,7 +93,7 @@ function storeVals() {
 
     localStorage['tonecolors'] = document.optform.tonecolors.checked ? 'yes' : 'no';
     chrome.extension.getBackgroundPage().zhongwenMain.config.tonecolors = localStorage['tonecolors'];
-    
+
     localStorage['tone1'] = document.optform.tone1.value;
     localStorage['tone2'] = document.optform.tone2.value;
     localStorage['tone3'] = document.optform.tone3.value;
