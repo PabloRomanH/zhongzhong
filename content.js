@@ -60,6 +60,8 @@ var zhongwenContent = {
 
     //Adds the listeners and stuff.
     enableTab: function() {
+        this.dictIndex = 0;
+        this.altView = 0;
         if (!window.zhongwen) {
             window.zhongwen = {};
             document.addEventListener('mousemove', this.onMouseMove);
@@ -335,6 +337,8 @@ var zhongwenContent = {
                 break;
             case 68:        // d
                 // show and hide definitions
+                if (window.zhongwen.config.shortcuts != 'yes')
+                    break;
                 if (window.zhongwen.config.definitions == 'yes') {
                     window.zhongwen.config.definitions = 'no';
                 } else {
@@ -389,6 +393,8 @@ var zhongwenContent = {
                 break;
             case 80:        // p
                 // show and hide pinyin
+                if (window.zhongwen.config.shortcuts != 'yes')
+                    break;
                 if (window.zhongwen.config.pinyin == 'yes') {
                     window.zhongwen.config.pinyin = 'no';
                 } else {
@@ -478,6 +484,8 @@ var zhongwenContent = {
                 break;
             case 90:        // z
                 // show and hide zhuyin
+                if (window.zhongwen.config.shortcuts != 'yes')
+                    break;
                 if (window.zhongwen.config.zhuyin == 'yes') {
                     window.zhongwen.config.zhuyin = 'no';
                 } else {

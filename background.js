@@ -142,6 +142,7 @@ initStorage("tone2", "#F80");
 initStorage("tone3", "#0F0");
 initStorage("tone4", "#00F");
 initStorage("tone5", "#A0A0A0");
+initStorage("shortcuts", "yes");
 
 
 zhongwenMain.config = {};
@@ -162,6 +163,7 @@ zhongwenMain.config.tones = [localStorage.tone1,
                              localStorage.tone3,
                              localStorage.tone4,
                              localStorage.tone5];
+zhongwenMain.config.shortcuts = localStorage.shortcuts;
 
 
 if (localStorage['enabled'] == 1) {

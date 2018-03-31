@@ -87,6 +87,8 @@ function loadVals() {
     else { // == 'taiwan'
         document.optform.voice[1].selected = true;
     }
+
+    document.optform.shortcuts.checked = localStorage['shortcuts'] == 'yes';
 }
 
 function storeVals() {
@@ -136,6 +138,9 @@ function storeVals() {
 
     localStorage['voice'] = document.optform.voice.value;
     chrome.extension.getBackgroundPage().zhongwenMain.config.voice = localStorage['voice'];
+
+    localStorage['shortcuts'] = document.optform.shortcuts.checked ? 'yes' : 'no';
+    chrome.extension.getBackgroundPage().zhongwenMain.config.shortcuts = localStorage['shortcuts'];
 }
 
 $(function() {
