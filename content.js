@@ -53,6 +53,7 @@
 var zhongwenContent = {
     dictIndex: 0,
     altView: 0,
+    offsetY: 0,
     lastFound: null,
     keysDown: [],
     lastSelEnd: [], // Hack because SelEnd can't be sent in messages
@@ -62,6 +63,7 @@ var zhongwenContent = {
     enableTab: function() {
         this.dictIndex = 0;
         this.altView = 0;
+        this.offsetY = 0;
         if (!window.zhongwen) {
             window.zhongwen = {};
             document.addEventListener('mousemove', this.onMouseMove);
@@ -474,12 +476,12 @@ var zhongwenContent = {
                 break;
             case 88:        // x
                 this.altView = 0;
-                window.zhongwen.popY -= 20;
+                this.offsetY -= 20;
                 this.show(window.zhongwen);
                 break;
             case 89:        // y
                 this.altView = 0;
-                window.zhongwen.popY += 20;
+                this.offsetY += 20;
                 this.show(window.zhongwen);
                 break;
             case 90:        // z
@@ -791,7 +793,7 @@ var zhongwenContent = {
 
     processHtml: function(html) {
         var tdata = window.zhongwen;
-        zhongwenContent.showPopup(html, tdata.prevTarget, tdata.popX, tdata.popY, false);
+        zhongwenContent.showPopup(html, tdata.prevTarget, tdata.popX, tdata.popY + this.offsetY, false);
         return 1;
     },
 
