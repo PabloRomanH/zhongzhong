@@ -907,6 +907,10 @@ var zhongwenContent = {
         tdata.clientY = ev.clientY;
 
         var range = document.caretRangeFromPoint(ev.clientX, ev.clientY);
+        if (!range) {
+            return;
+        }
+
         var rp = range.startContainer;
         var ro = range.startOffset;
 
@@ -934,7 +938,6 @@ var zhongwenContent = {
         else if(!(rp) || ((rp.parentNode != ev.target))){
             rp = null;
             ro = -1;
-
         }
 
         tdata.prevTarget = ev.target;
