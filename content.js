@@ -1059,11 +1059,14 @@ var zhongwenContent = {
                 hanziClass += '-small';
             }
 
+            let fontClass = '';
             if (window.zhongwen.config.font == 'serif') {
-                hanziClass += ' w-hanzi-serif';
+                fontClass = 'w-hanzi-serif';
             } else if (window.zhongwen.config.font == 'handdrawn') {
-                hanziClass += ' w-hanzi-handdrawn';
+                fontClass = 'w-hanzi-handdrawn';
             }
+
+            hanziClass = hanziClass + ' ' + fontClass;
 
             if(window.zhongwen.config.chars == 'both' || window.zhongwen.config.chars == 'simplified') {
                 html += '<span class="' + hanziClass + '">' + e[2] + '</span>&nbsp;';
@@ -1078,7 +1081,7 @@ var zhongwenContent = {
             if (window.zhongwen.config.fontSize == 'small') {
                 pinyinClass += '-small';
             }
-            var p = this.pinyinAndZhuyin(e[3], showToneColors, pinyinClass);
+            var p = this.pinyinAndZhuyin(e[3], showToneColors, pinyinClass, fontClass);
 
             if (window.zhongwen.config.pinyin == 'yes') {
                 html += p[0];
@@ -1183,6 +1186,18 @@ var zhongwenContent = {
         html += '<table class="k-main-tb"><tr><td valign="top">';
         html += box;
 
+
+        let hanziClass = 'k-hanzi';
+
+        let fontClass = '';
+        if (window.zhongwen.config.font == 'serif') {
+            fontClass = 'w-hanzi-serif';
+        } else if (window.zhongwen.config.font == 'handdrawn') {
+            fontClass = 'w-hanzi-handdrawn';
+        }
+
+        hanziClass = hanziClass + ' ' + fontClass;
+
         let hanziChars;
         if (entry.simplified) {
             hanziChars = entry.simplified + ' ' + entry.hanzi;
@@ -1191,7 +1206,7 @@ var zhongwenContent = {
         } else {
             hanziChars = entry.hanzi;
         }
-        html += '<span class="k-hanzi">' + hanziChars + ' </span>';
+        html += '<span class="' + hanziClass + '">' + hanziChars + ' </span>';
 
         var unicode = window.getSelection().toString().charCodeAt(0);
         var strokeorder = 'https://www.mdbg.net/chindict/rsc/img/stroke_anim/' + unicode + '.gif';
@@ -1205,7 +1220,7 @@ var zhongwenContent = {
         if (window.zhongwen.config.fontSize == 'small') {
             pinyinClass += '-small';
         }
-        var p = this.pinyinAndZhuyin(entry.pinyin, showToneColors, pinyinClass);
+        var p = this.pinyinAndZhuyin(entry.pinyin, showToneColors, pinyinClass, fontClass);
 
         if (window.zhongwen.config.pinyin == 'yes') {
             html += p[0] + '<br>';
@@ -1271,7 +1286,7 @@ var zhongwenContent = {
         return [html, text];
     },
 
-    pinyinAndZhuyin: function(syllables, showToneColors, pinyinClass) {
+    pinyinAndZhuyin: function(syllables, showToneColors, pinyinClass, fontClass) {
         var text = '';
         var html = ''
         var zhuyin = '';
@@ -1325,9 +1340,17 @@ var zhongwenContent = {
                 zhuyinClass += '-small';
             }
 
-            zhuyin += '<span class="tone' + m[4] + ' ' + zhuyinClass + '">'
-            + this.zhuyinMap[syllable.substring(0, syllable.length -1).toLowerCase()]
-            + this.zhuyinTones[syllable[syllable.length - 1]] + '</span>'
+            zhuyinClass += ' ' + fontClass;
+
+            if (showToneColors) {
+              zhuyin += '<span class="tone' + m[4] + ' ' + zhuyinClass + '">'
+              + this.zhuyinMap[syllable.substring(0, syllable.length -1).toLowerCase()]
+              + this.zhuyinTones[syllable[syllable.length - 1]] + '</span>'
+            } else {
+              zhuyin += '<span class="' + zhuyinClass + '">'
+              + this.zhuyinMap[syllable.substring(0, syllable.length -1).toLowerCase()]
+              + this.zhuyinTones[syllable[syllable.length - 1]] + '</span>'
+            }
         }
         return [html, text, zhuyin]
     },

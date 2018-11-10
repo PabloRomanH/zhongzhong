@@ -48,8 +48,16 @@
 }
 
 #zhongwen-window .w-zhuyin {
-  font-family: PMingLiU, 'Apple LiGothic', sans-serif;
+  font-family: sans-serif;
   font-size: 16px;
+}
+
+#zhongwen-window .w-zhuyin.w-hanzi-serif, #zhongwen-window .w-zhuyin.w-hanzi-handdrawn {
+  font-family: PMingLiU, 'Apple LiGothic';
+}
+
+#zhongwen-window .w-zhuyin-small.w-hanzi-serif, #zhongwen-window .w-zhuyin-small.w-hanzi-handdrawn {
+  font-family: PMingLiU, 'Apple LiGothic';
 }
 
 #zhongwen-window .w-hanzi-small {
@@ -75,7 +83,7 @@
 }
 
 #zhongwen-window .w-zhuyin-small {
-  font-family: PMingLiU, 'Apple LiGothic', sans-serif;
+  font-family: sans-serif;
   font-size: 12px;
 }
 
@@ -111,7 +119,6 @@
 }
 
 #zhongwen-window .k-hanzi {
-	font-family: serif;
 	font-size: 48px;
 	color: #000000;
 	vertical-align: middle;
