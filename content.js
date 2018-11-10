@@ -1,6 +1,6 @@
 /*
         Zhongzhong - A Chinese-English Popup Dictionary
-        Copyright (C) 2016 Pablo Roman
+        Copyright (C) 2016-2018 Pablo Roman
         https://chrome.google.com/webstore/detail/dggcgdjndddfmcfoipccicfoajmciacf
 
         ---

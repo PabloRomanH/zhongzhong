@@ -51,7 +51,7 @@
 */
 
 function zhongwenDict() {
-    this.loadDictionary();
+    this.donePromise = this.loadDictionary();
 }
 
 zhongwenDict.prototype = {
@@ -62,10 +62,26 @@ zhongwenDict.prototype = {
     grammarKeywords: {},
 
     fileRead: function(url) {
-        var req = new XMLHttpRequest();
-        req.open("GET", url, false);
-        req.send(null);
-        return req.responseText;
+        let req = new XMLHttpRequest();
+        req.open("GET", url, true);
+
+        let result = new Promise(function(resolve, reject) {
+            req.onload = function (e) {
+                if (req.readyState === 4) {
+                    if (req.status === 200) {
+                        resolve(req.responseText);
+                    } else {
+                        reject(req.statusText);
+                    }
+                }
+            };
+            req.onerror = function (e) {
+                reject(req.statusText);
+            };
+
+            req.send(null);
+        });
+        return result;
     },
 
     find: function(data, text) {
@@ -89,15 +105,21 @@ zhongwenDict.prototype = {
     },
 
     loadDictionary: function() {
-        this.wordDict = this.fileRead(chrome.extension.getURL("data/cedict_ts.u8"));
-        this.wordIndex = this.fileRead(chrome.extension.getURL("data/cedict.idx"));
+        let dictP = this.fileRead(chrome.extension.getURL("data/cedict_ts.u8"));
+        let indexP = this.fileRead(chrome.extension.getURL("data/cedict.idx"));
 
-        this.hanziData = this.fileRead(chrome.extension.getURL("data/hanzi.dat"), 'UTF-8').split('\n');
-		// this.radData = this.fileReadArray(chrome.extension.getURL("data/radicals.dat"), 'UTF-8');
-        this.radData = ['亻		にんべん	person	伊位依偉荏液億俺化仮'];
+        let hanziP = this.fileRead(chrome.extension.getURL("data/hanzi.dat"));
 
-        var grammarKeywordFile = this.fileRead(chrome.extension.getURL("data/grammarKeywordsMin.json"));
-        this.grammarKeywords = JSON.parse(grammarKeywordFile);
+        let grammarP = this.fileRead(chrome.extension.getURL("data/grammarKeywordsMin.json"));
+
+        return Promise.all([dictP, indexP, hanziP, grammarP]).then(([wordDict, wordIndex, hanziData, grammarKeywordFile]) => {
+            this.wordDict = wordDict;
+            this.wordIndex = wordIndex;
+            this.hanziData = hanziData.split('\n');
+
+            var grammarKeywordFile = grammarKeywordFile;
+            this.grammarKeywords = JSON.parse(grammarKeywordFile);
+        });
     },
 
     hasKeyword: function (keyword) {
@@ -209,16 +231,6 @@ zhongwenDict.prototype = {
     hanziSearch: function(char) {
         var data = this.findHanzi(char);
 		if (!data) return null;
-
-        radical = 1;
-
-        var radicals = [];
-
-        for (var i = 0; i < this.radData.length; i++) {
-            if (radical != i && this.radData[i].indexOf(char) != -1) {
-                radicals.push(this.radData[i].split('\t'));
-            }
-        }
 
         return {
             hanzi: char,

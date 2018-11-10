@@ -167,8 +167,10 @@ zhongwenMain.config.shortcuts = localStorage.shortcuts;
 
 
 if (localStorage['enabled'] == 1) {
-    zhongwenMain.loadDictionary();
-    zhongwenMain.enabled = 1;
+    zhongwenMain.loadDictionary()
+    .then(() => {
+      zhongwenMain.enabled = 1;
+    });
 } else {
     zhongwenMain.enabled = 0;
 }

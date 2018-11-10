@@ -109,15 +109,10 @@ var zhongwenMain = {
 
     loadDictionary: function() {
         if (!this.dict) {
-            try {
-                this.dict = new zhongwenDict();
-            }
-            catch (ex) {
-                alert('Error loading dictionary: ' + ex);
-                return false;
-            }
+            this.dict = new zhongwenDict();
+            return this.dict.donePromise;
         }
-        return true;
+        return Promise.resolve();
     },
 
     // The callback for onSelectionChanged.
@@ -135,13 +130,20 @@ var zhongwenMain = {
     },
 
     enable: function(tab) {
-
         localStorage['enabled'] = 1;
 
         if (!this.dict) {
-            if (!this.loadDictionary()) return;
+            this.loadDictionary()
+            .then(() => {
+                this.chromeSetup(tab);
+            })
+            .catch(err => {
+                alert('Error loading dictionary: ' + err);
+            });
         }
+    },
 
+    chromeSetup: function(tab) {
         // Send message to current tab to add listeners and create stuff
         chrome.tabs.sendRequest(tab.id, {
             "type": "enable",
