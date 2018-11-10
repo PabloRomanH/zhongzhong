@@ -9,6 +9,9 @@ chrome.tabs.onActiveChanged.addListener(zhongwenMain.onTabSelect);
 
 chrome.extension.onRequest.addListener(function(request, sender, response) {
     switch(request.type) {
+        case 'enable':
+            zhongwenMain.enableToggle(sender.tab);
+            break;
         case 'enable?':
             zhongwenMain.onTabSelect(sender.tab.id);
             break;

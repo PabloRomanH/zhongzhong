@@ -50,6 +50,23 @@
 
  */
 
+document.addEventListener('keydown', keyEnabler);
+
+function keyEnabler(ev) {
+    if (ev.ctrlKey || ev.metaKey) {
+        return;
+    }
+
+    if (ev.altKey && (ev.keyCode == 90)) {  // Alt+Z
+        chrome.extension.sendRequest({
+            type: 'enable'
+        });
+        return;
+    }
+}
+
+
+
 var zhongwenContent = {
     dictIndex: 0,
     altView: 0,
@@ -286,12 +303,15 @@ var zhongwenContent = {
             return;
         }
 
-        if (ev.altKey && (ev.keyCode == 87)) {  // Alt+W
-            chrome.extension.sendRequest({
-                type: 'open',
-                tabType: 'wordlist',
-                url: '/wordlist.html'
-            });
+        if (ev.altKey) {
+            if (ev.keyCode == 87) {  // Alt+W
+                chrome.extension.sendRequest({
+                    type: 'open',
+                    tabType: 'wordlist',
+                    url: '/wordlist.html'
+                });
+                return;
+            }
             return;
         }
 
