@@ -12,6 +12,10 @@ chrome.extension.onRequest.addListener(function(request, sender, response) {
         case 'enable':
             zhongwenMain.enableToggle(sender.tab);
             break;
+        case 'enableWithKey':
+            if (String.fromCharCode(request.key) == zhongwenMain.config.enableKey)
+                zhongwenMain.enableToggle(sender.tab);
+            break;
         case 'enable?':
             zhongwenMain.onTabSelect(sender.tab.id);
             break;
@@ -145,7 +149,9 @@ initStorage("tone2", "#F80");
 initStorage("tone3", "#0F0");
 initStorage("tone4", "#00F");
 initStorage("tone5", "#A0A0A0");
-initStorage("shortcuts", "yes");
+initStorage("shortcuts", "no");
+initStorage("shortcutsLookup", "yes");
+initStorage("enableKey", "Z");
 
 
 zhongwenMain.config = {};
@@ -167,6 +173,8 @@ zhongwenMain.config.tones = [localStorage.tone1,
                              localStorage.tone4,
                              localStorage.tone5];
 zhongwenMain.config.shortcuts = localStorage.shortcuts;
+zhongwenMain.config.shortcutsLookup = localStorage.shortcutsLookup;
+zhongwenMain.config.enableKey = localStorage.enableKey;
 
 
 if (localStorage['enabled'] == 1) {

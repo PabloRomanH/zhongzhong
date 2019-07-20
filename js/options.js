@@ -89,6 +89,10 @@ function loadVals() {
     }
 
     document.optform.shortcuts.checked = localStorage['shortcuts'] == 'yes';
+    document.optform.shortcutsLookup.checked = localStorage['shortcutsLookup'] == 'yes';
+
+    document.optform.enableKey.value = localStorage['enableKey'] || 'Z';
+    console.log(document.optform.enableKey.value, localStorage['enableKey'] || 'Z')
 }
 
 function storeVals() {
@@ -141,6 +145,13 @@ function storeVals() {
 
     localStorage['shortcuts'] = document.optform.shortcuts.checked ? 'yes' : 'no';
     chrome.extension.getBackgroundPage().zhongwenMain.config.shortcuts = localStorage['shortcuts'];
+
+    localStorage['shortcutsLookup'] = document.optform.shortcutsLookup.checked ? 'yes' : 'no';
+    chrome.extension.getBackgroundPage().zhongwenMain.config.shortcutsLookup = localStorage['shortcutsLookup'];
+
+    localStorage['enableKey'] = document.optform.enableKey.value.toUpperCase();
+    console.log(document.optform.enableKey.value.toUpperCase());
+    chrome.extension.getBackgroundPage().zhongwenMain.config.enableKey = localStorage['enableKey'];
 }
 
 $(function() {

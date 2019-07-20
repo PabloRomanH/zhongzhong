@@ -65,7 +65,7 @@ var zhongwenMain = {
     'Keyboard actions:' +
     '<p>' +
     '<table style="margin: 20px;" cellspacing=5 cellpadding=5>' +
-    '<tr><td><b>Alt + Z&nbsp;:</b></td><td style="font-weight: bold;">&nbsp;Enable/Disable Zhonhzhong</td></tr>' +
+    '<tr><td><b>Alt + ' + localStorage['enableKey'] + '&nbsp;:</b></td><td style="font-weight: bold;">&nbsp;Enable/Disable Zhongzhong</td></tr>' +
     '<tr><td><b>&nbsp;</b></td><td>&nbsp;</td></tr>' +
     '<tr><td><b>N&nbsp;:</b></td><td>&nbsp;Next word</td></tr>' +
     '<tr><td><b>B&nbsp;:</b></td><td>&nbsp;Previous character</td></tr>' +

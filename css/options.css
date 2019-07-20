@@ -23,3 +23,8 @@
 .blue {
     color: #00F;
 }
+
+.enablekey {
+    display: inline;
+    width: 50px
+}

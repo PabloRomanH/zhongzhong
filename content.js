@@ -57,9 +57,10 @@ function keyEnabler(ev) {
         return;
     }
 
-    if (ev.altKey && (ev.keyCode == 90)) {  // Alt+Z
+    if (ev.altKey) {  // Alt+Z or whatever the user set up
         chrome.extension.sendRequest({
-            type: 'enable'
+            type: 'enableWithKey',
+            key: ev.keyCode
         });
         return;
     }
@@ -388,6 +389,11 @@ var zhongwenContent = {
                 }
                 break;
             case 75:        // k
+                if (!this.isVisible()) {
+                    break;
+                }
+                if (window.zhongwen.config.shortcutsLookup != 'yes')
+                    break;
                 var unicode = window.getSelection().toString()[0];
                 var rtk = 'http://kanji.koohii.com/study/kanji/' + unicode;
 
@@ -473,6 +479,8 @@ var zhongwenContent = {
                 });
                 break;
             case 84:     // t
+                if (window.zhongwen.config.shortcutsLookup != 'yes')
+                    break;
                 if (!this.isVisible()) {
                     break;
                 }
@@ -524,6 +532,8 @@ var zhongwenContent = {
                 if (!ev.altKey) {
                     break;
                 }
+                if (window.zhongwen.config.shortcutsLookup != 'yes')
+                    break;
                 var sel = encodeURIComponent(
                     window.getSelection().toString());
 
@@ -539,6 +549,8 @@ var zhongwenContent = {
                 if (!ev.altKey) {
                     break;
                 }
+                if (window.zhongwen.config.shortcutsLookup != 'yes')
+                    break;
                 sel = encodeURIComponent(
                     window.getSelection().toString());
 
@@ -554,6 +566,8 @@ var zhongwenContent = {
                 if (!ev.altKey) {
                     break;
                 }
+                if (window.zhongwen.config.shortcutsLookup != 'yes')
+                    break;
                 sel = encodeURIComponent(
                     window.getSelection().toString());
 
@@ -569,6 +583,8 @@ var zhongwenContent = {
                 if (!ev.altKey) {
                     break;
                 }
+                if (window.zhongwen.config.shortcutsLookup != 'yes')
+                    break;
                 sel = encodeURIComponent(
                     window.getSelection().toString());
 
@@ -584,6 +600,8 @@ var zhongwenContent = {
                 if (!ev.altKey) {
                     break;
                 }
+                if (window.zhongwen.config.shortcutsLookup != 'yes')
+                    break;
                 sel = encodeURIComponent(
                     window.getSelection().toString());
 
@@ -599,6 +617,8 @@ var zhongwenContent = {
                 if (!ev.altKey) {
                     break;
                 }
+                if (window.zhongwen.config.shortcutsLookup != 'yes')
+                    break;
                 sel = encodeURIComponent(
                     window.getSelection().toString());
 
@@ -615,6 +635,8 @@ var zhongwenContent = {
                 if (!ev.altKey) {
                     break;
                 }
+                if (window.zhongwen.config.shortcutsLookup != 'yes')
+                    break;
                 sel = encodeURIComponent(
                     window.getSelection().toString());
 
@@ -630,6 +652,8 @@ var zhongwenContent = {
                 if (!ev.altKey) {
                     break;
                 }
+                if (window.zhongwen.config.shortcutsLookup != 'yes')
+                    break;
                 sel = encodeURIComponent(
                     window.getSelection().toString());
 
@@ -646,7 +670,7 @@ var zhongwenContent = {
         }
 
         if (ev.keyCode != 71 && ev.keyCode != 83 && ev.keyCode != 84 && ev.keyCode != 87 &&
-            (ev.keyCode < 49 || 57 < ev.keyCode)) {
+            ev.keyCode != 75 && (ev.keyCode < 49 || 57 < ev.keyCode)) {
             // don't do this for opening a new Grammar, Skritter, Tatoeba or dictionary tab,
             // or the wordlist, because onKeyUp won't be called
             this.keysDown[ev.keyCode] = 1;
