@@ -49,6 +49,9 @@ function loadVals() {
     if(storedValue == 'cn') {
         document.optform.skritterTLD[1].selected = true;
     }
+    else if(storedValue == 'disabled') {
+        document.optform.skritterTLD[2].selected = true;
+    }
     else {
         document.optform.skritterTLD[0].selected = true;
     }
