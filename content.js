@@ -451,6 +451,9 @@ var zhongwenContent = {
 
                 break;
             case 83:        // s
+                if (window.zhongwen.config.skritterTLD == 'disabled') {
+                  break;
+                }
                 if (!this.isVisible()) {
                     break;
                 }
