@@ -1132,6 +1132,17 @@ var zhongwenContent = {
                 html += p[0];
             }
 
+            // Cantonese Jyutping
+
+            for (let word of [e[1], e[2]]) {
+                if (entry.cantoneseReadings.hasOwnProperty(word)) {
+                    let jyutping = entry.cantoneseReadings[word];
+                    html += '&nbsp;';
+                    html += `<span class="${pinyinClass}">${jyutping}</span>`;
+                    break;
+                }
+            }
+
             // Zhuyin
 
             if (window.zhongwen.config.zhuyin == 'yes') {

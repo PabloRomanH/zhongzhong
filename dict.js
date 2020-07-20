@@ -108,13 +108,18 @@ zhongwenDict.prototype = {
         let dictP = this.fileRead(chrome.extension.getURL("data/cedict_ts.u8"));
         let indexP = this.fileRead(chrome.extension.getURL("data/cedict.idx"));
 
+        let cantoReadingsDictP = this.fileRead(chrome.extension.getURL("data/cccedict-canto-readings-150923.txt"));
+        let cantoReadingsIndexP = this.fileRead(chrome.extension.getURL("data/cccedict-canto-readings.idx"));
+
         let hanziP = this.fileRead(chrome.extension.getURL("data/hanzi.dat"));
 
         let grammarP = this.fileRead(chrome.extension.getURL("data/grammarKeywordsMin.json"));
 
-        return Promise.all([dictP, indexP, hanziP, grammarP]).then(([wordDict, wordIndex, hanziData, grammarKeywordFile]) => {
+        return Promise.all([dictP, indexP, cantoReadingsDictP, cantoReadingsIndexP, hanziP, grammarP]).then(([wordDict, wordIndex, cantoReadingsDict, cantoReadingsIndex, hanziData, grammarKeywordFile]) => {
             this.wordDict = wordDict;
             this.wordIndex = wordIndex;
+            this.cantoReadingsDict = cantoReadingsDict;
+            this.cantoReadingsIndex = cantoReadingsIndex;
             this.hanziData = hanziData.split('\n');
 
             var grammarKeywordFile = grammarKeywordFile;
@@ -126,11 +131,15 @@ zhongwenDict.prototype = {
         return this.grammarKeywords[keyword];
     },
 
-    singleWordSearch: function(word, max) {
+    singleWordSearch: function(word, max, cantonese=false) {
         var entry = { };
 
         var dict = this.wordDict;
         var index = this.wordIndex;
+        if (cantonese) {
+            dict = this.cantoReadingsDict;
+            index = this.cantoReadingsIndex;
+        }
         var maxTrim = 7;
         var have = {};
         var count = 0;
@@ -225,7 +234,23 @@ zhongwenDict.prototype = {
         if (entry.data.length == 0) return null;
 
         entry.matchLen = maxLen;
+        entry.cantoneseReadings = this.findCantoneseReadings(entry);
         return entry;
+    },
+
+    findCantoneseReadings: function(entry) {
+        let ret = {};
+        for ([dentry, word] of entry.data) {
+            for ([de, w] of this.singleWordSearch(word, null, true).data) {
+                // Simplification: take the first match as the reading
+                if (!ret.hasOwnProperty(word)) {
+                    let match = de.match(/^([^\s]+?)\s+([^\s]+?)\s+\[(.*?)\]?\s*\{(.+)\}/);
+                    let jyutping = match[4];
+                    ret[word] = jyutping;
+                }
+            }
+        }
+        return ret;
     },
 
     hanziSearch: function(char) {
