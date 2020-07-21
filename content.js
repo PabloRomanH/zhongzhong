@@ -666,6 +666,23 @@ var zhongwenContent = {
                     url: baike
                 });
                 break;
+            case 57:     // 9
+                if (!ev.altKey) {
+                    break;
+                }
+                if (window.zhongwen.config.shortcutsLookup != 'yes')
+                    break;
+                sel = encodeURIComponent(
+                    window.getSelection().toString());
+
+                // http://www.cantonese.sheik.co.uk/dictionary/search/?searchtype=1&text=%E4%B8%AD
+                var cantodict = 'http://www.cantonese.sheik.co.uk/dictionary/search/?searchtype=1&text=' + sel;
+
+                chrome.extension.sendRequest({
+                    type: 'open',
+                    url: cantodict
+                });
+                break;
             default:
                 return;
         }
