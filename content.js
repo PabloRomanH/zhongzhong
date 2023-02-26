@@ -466,7 +466,7 @@ var zhongwenContent = {
                 }
 
                 skritter +=
-                    '/vocab/api/add?from=Zhongwen&siteref=Zhongwen&lang=zh&word=' +
+                    '/vocab/api/add?from=zhongzhong&siteref=Zhongwen&lang=zh&word=' +
                     encodeURIComponent(this.lastFound[0][0]) +
                     '&trad=' + encodeURIComponent(this.lastFound[0][1]) +
                     '&rdng=' + encodeURIComponent(this.lastFound[0][4]) +
