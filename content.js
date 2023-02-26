@@ -606,8 +606,8 @@ var zhongwenContent = {
                 sel = encodeURIComponent(
                     window.getSelection().toString());
 
-                // http://www.mdbg.net/chindict/chindict.php?page=worddict&wdrst=0&wdqb=%E6%B0%B4
-                var mdbg = 'http://www.mdbg.net/chindict/chindict.php?page=worddict&wdrst=0&wdqb=' + sel;
+                // http://www.mdbg.net/chinese/dictionary.php?page=worddict&wdrst=0&wdqb=%E6%B0%B4
+                var mdbg = 'http://www.mdbg.net/chinese/dictionary.php?page=worddict&wdrst=0&wdqb=' + sel;
 
                 chrome.extension.sendRequest({
                     type: 'open',
@@ -1254,7 +1254,7 @@ var zhongwenContent = {
         html += '<span class="' + hanziClass + '">' + hanziChars + ' </span>';
 
         var unicode = window.getSelection().toString().charCodeAt(0);
-        var strokeorder = 'https://www.mdbg.net/chindict/rsc/img/stroke_anim/' + unicode + '.gif';
+        var strokeorder = 'https://www.mdbg.net/chinese/rsc/img/stroke_anim/' + unicode + '.gif';
         html += '<img alt="Charater stroke order" style="display: inline-block; width: 48px; height: 48px; font-size: 48px; vertical-align: middle;" src="' + strokeorder + '" onerror="this.style = \'display: none;\'">';
         html += '<br/>'
 
