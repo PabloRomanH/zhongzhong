@@ -1388,7 +1388,7 @@ var zhongwenContent = {
             zhuyinClass += ' ' + fontClass;
 
             if (showToneColors) {
-              zhuyin += '<span class="tone' + m[4] + ' ' + zhuyinClass + '">'
+              zhuyin += '<span class="' + zhuyinClass + '" style="color: ' + window.zhongwen.config.tones[m[4] - 1] + '">'
               + this.zhuyinMap[syllable.substring(0, syllable.length -1).toLowerCase()]
               + this.zhuyinTones[syllable[syllable.length - 1]] + '</span>'
             } else {
