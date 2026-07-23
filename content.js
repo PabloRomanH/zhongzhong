@@ -58,7 +58,7 @@ function keyEnabler(ev) {
     }
 
     if (ev.altKey) {  // Alt+Z or whatever the user set up
-        chrome.extension.sendRequest({
+        chrome.runtime.sendMessage({
             type: 'enableWithKey',
             key: ev.keyCode
         });
@@ -93,7 +93,7 @@ var zhongwenContent = {
 
     onDOMNodeInserted: function(ev) {
         if (ev.target.nodeName == 'IFRAME') {
-            chrome.extension.sendRequest({
+            chrome.runtime.sendMessage({
                 type: 'iframe'
             });
         }
@@ -142,7 +142,7 @@ var zhongwenContent = {
             css.setAttribute('rel', 'stylesheet');
             css.setAttribute('type', 'text/css');
             var cssdoc = window.zhongwen.config.css;
-            css.setAttribute('href', chrome.extension.getURL('css/popup-' +
+            css.setAttribute('href', chrome.runtime.getURL('css/popup-' +
                 cssdoc + '.css'));
             css.setAttribute('id', 'zhongwen-css');
             topdoc.getElementsByTagName('head')[0].appendChild(css);
@@ -305,7 +305,7 @@ var zhongwenContent = {
         }
 
         if (ev.altKey && ev.keyCode == 87) {  // Alt+W
-            chrome.extension.sendRequest({
+            chrome.runtime.sendMessage({
                 type: 'open',
                 tabType: 'wordlist',
                 url: '/wordlist.html'
@@ -365,7 +365,7 @@ var zhongwenContent = {
                     window.zhongwen.config.definitions = 'yes';
                 }
                 this.show(window.zhongwen);
-                chrome.extension.sendRequest({
+                chrome.runtime.sendMessage({
                     type: 'toggle',
                     field: 'definitions'
                 });
@@ -379,7 +379,7 @@ var zhongwenContent = {
                     var allset = 'http://resources.allsetlearning.com/chinese/grammar/' + sel;
                     allset = allset + '?utm_source=zhongwen&utm_medium=extension&utm_campaign=wiki';
 
-                    chrome.extension.sendRequest({
+                    chrome.runtime.sendMessage({
                         type: 'open',
                         url: allset
                     });
@@ -394,7 +394,7 @@ var zhongwenContent = {
                 var unicode = window.getSelection().toString()[0];
                 var rtk = 'http://kanji.koohii.com/study/kanji/' + unicode;
 
-                chrome.extension.sendRequest({
+                chrome.runtime.sendMessage({
                     type: 'open',
                     url: rtk
                 });
@@ -426,7 +426,7 @@ var zhongwenContent = {
                     window.zhongwen.config.pinyin = 'yes';
                 }
                 this.show(window.zhongwen);
-                chrome.extension.sendRequest({
+                chrome.runtime.sendMessage({
                     type: 'toggle',
                     field: 'pinyin'
                 });
@@ -442,7 +442,7 @@ var zhongwenContent = {
                     entries.push(entry);
                 }
 
-                chrome.extension.sendRequest({
+                chrome.runtime.sendMessage({
                     type: 'add',
                     entries: entries
                 });
@@ -472,7 +472,7 @@ var zhongwenContent = {
                     '&rdng=' + encodeURIComponent(this.lastFound[0][4]) +
                     '&defn=' + encodeURIComponent(this.lastFound[0][3]);
 
-                chrome.extension.sendRequest({
+                chrome.runtime.sendMessage({
                     type: 'open',
                     tabType: 'skritter',
                     url: skritter
@@ -491,13 +491,13 @@ var zhongwenContent = {
                 // http://tatoeba.org/eng/sentences/search?from=cmn&to=eng&query=%E8%BF%9B%E8%A1%8C
                 var tatoeba = 'http://tatoeba.org/eng/sentences/search?from=cmn&to=eng&query=' + sel;
 
-                chrome.extension.sendRequest({
+                chrome.runtime.sendMessage({
                     type: 'open',
                     url: tatoeba
                 });
                 break;
             case 86:        // v
-                chrome.extension.sendRequest({
+                chrome.runtime.sendMessage({
                     type: 'speak',
                     text: this.lastFound[0][0]
                 });
@@ -522,7 +522,7 @@ var zhongwenContent = {
                     window.zhongwen.config.zhuyin = 'yes';
                 }
                 this.show(window.zhongwen);
-                chrome.extension.sendRequest({
+                chrome.runtime.sendMessage({
                     type: 'toggle',
                     field: 'zhuyin'
                 });
@@ -541,7 +541,7 @@ var zhongwenContent = {
                 // http://ce.linedict.com/dict.html#/cnen/search?query=%E4%B8%AD
                 var linedict = 'http://ce.linedict.com/dict.html#/cnen/search?query=' + sel;
 
-                chrome.extension.sendRequest({
+                chrome.runtime.sendMessage({
                     type: 'open',
                     url: linedict
                 });
@@ -558,7 +558,7 @@ var zhongwenContent = {
                 // http://www.yellowbridge.com/chinese/wordsearch.php?searchMode=C&word=%E4%B8%AD
                 var yellow = 'https://www.yellowbridge.com/chinese/wordsearch.php?searchMode=C&word=' + sel;
 
-                chrome.extension.sendRequest({
+                chrome.runtime.sendMessage({
                     type: 'open',
                     url: yellow
                 });
@@ -575,7 +575,7 @@ var zhongwenContent = {
                 // http://dict.cn/%E7%BF%BB%E8%AF%91
                 var dictcn = 'http://dict.cn/' + sel;
 
-                chrome.extension.sendRequest({
+                chrome.runtime.sendMessage({
                     type: 'open',
                     url: dictcn
                 });
@@ -592,7 +592,7 @@ var zhongwenContent = {
                 // http://www.iciba.com/%E4%B8%AD%E9%A4%90
                 var iciba = 'http://www.iciba.com/' + sel;
 
-                chrome.extension.sendRequest({
+                chrome.runtime.sendMessage({
                     type: 'open',
                     url: iciba
                 });
@@ -609,7 +609,7 @@ var zhongwenContent = {
                 // http://www.mdbg.net/chinese/dictionary.php?page=worddict&wdrst=0&wdqb=%E6%B0%B4
                 var mdbg = 'http://www.mdbg.net/chinese/dictionary.php?page=worddict&wdrst=0&wdqb=' + sel;
 
-                chrome.extension.sendRequest({
+                chrome.runtime.sendMessage({
                     type: 'open',
                     url: mdbg
                 });
@@ -627,7 +627,7 @@ var zhongwenContent = {
                 // var jukuu = 'http://jukuu.com/show-' + sel + '-0.html';
                 var jukuu = 'http://www.jukuu.com';
 
-                chrome.extension.sendRequest({
+                chrome.runtime.sendMessage({
                     type: 'open',
                     url: jukuu
                 });
@@ -644,7 +644,7 @@ var zhongwenContent = {
                 // https://www.moedict.tw/~%E4%B8%AD%E6%96%87
                 var moedict = 'https://www.moedict.tw/~' + sel;
 
-                chrome.extension.sendRequest({
+                chrome.runtime.sendMessage({
                     type: 'open',
                     url: moedict
                 });
@@ -661,7 +661,7 @@ var zhongwenContent = {
                 // http://baike.baidu.com/search?word=%E7%A0%B4%E9%87%9C%E6%B2%89%E8%88%9F
                 var baike = 'http://baike.baidu.com/search?word=' + sel;
 
-                chrome.extension.sendRequest({
+                chrome.runtime.sendMessage({
                     type: 'open',
                     url: baike
                 });
@@ -793,7 +793,7 @@ var zhongwenContent = {
 
         lastSelEnd = selEndList;
         lastRo = ro;
-        chrome.extension.sendRequest({
+        chrome.runtime.sendMessage({
             type: 'search',
             text: text,
             dict: this._dictFromIndex(this.dictIndex)
@@ -1054,10 +1054,14 @@ var zhongwenContent = {
     },
 
     copyToClipboard : function(data) {
-        chrome.extension.sendRequest({
-            type: 'copy',
-            data: data
-        });
+        var txt = document.createElement('textarea');
+        txt.style.position = "absolute";
+        txt.style.left = "-100%";
+        txt.value = data;
+        document.body.appendChild(txt);
+        txt.select();
+        document.execCommand('copy');
+        document.body.removeChild(txt);
 
         this.showPopup("Copied to clipboard", null, -1, -1);
     },
@@ -1817,7 +1821,7 @@ var zhongwenContent = {
 }
 
 //Event Listeners
-chrome.extension.onRequest.addListener(
+chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
         switch(request.type) {
             case 'enable':
@@ -1838,6 +1842,6 @@ chrome.extension.onRequest.addListener(
     );
 
 // When a page first loads, checks to see if it should enable script
-chrome.extension.sendRequest({
+chrome.runtime.sendMessage({
     type: 'enable?'
 });

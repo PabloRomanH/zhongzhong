@@ -62,26 +62,12 @@ zhongwenDict.prototype = {
     grammarKeywords: {},
 
     fileRead: function(url) {
-        let req = new XMLHttpRequest();
-        req.open("GET", url, true);
-
-        let result = new Promise(function(resolve, reject) {
-            req.onload = function (e) {
-                if (req.readyState === 4) {
-                    if (req.status === 200) {
-                        resolve(req.responseText);
-                    } else {
-                        reject(req.statusText);
-                    }
-                }
-            };
-            req.onerror = function (e) {
-                reject(req.statusText);
-            };
-
-            req.send(null);
+        return fetch(url).then(function(response) {
+            if (!response.ok) {
+                return Promise.reject(response.statusText);
+            }
+            return response.text();
         });
-        return result;
     },
 
     find: function(data, text) {
@@ -105,12 +91,12 @@ zhongwenDict.prototype = {
     },
 
     loadDictionary: function() {
-        let dictP = this.fileRead(chrome.extension.getURL("data/cedict_ts.u8"));
-        let indexP = this.fileRead(chrome.extension.getURL("data/cedict.idx"));
+        let dictP = this.fileRead(chrome.runtime.getURL("data/cedict_ts.u8"));
+        let indexP = this.fileRead(chrome.runtime.getURL("data/cedict.idx"));
 
-        let hanziP = this.fileRead(chrome.extension.getURL("data/hanzi.dat"));
+        let hanziP = this.fileRead(chrome.runtime.getURL("data/hanzi.dat"));
 
-        let grammarP = this.fileRead(chrome.extension.getURL("data/grammarKeywordsMin.json"));
+        let grammarP = this.fileRead(chrome.runtime.getURL("data/grammarKeywordsMin.json"));
 
         return Promise.all([dictP, indexP, hanziP, grammarP]).then(([wordDict, wordIndex, hanziData, grammarKeywordFile]) => {
             this.wordDict = wordDict;

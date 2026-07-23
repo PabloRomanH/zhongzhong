@@ -56,8 +56,8 @@ var zhongwenMain = {
 
     tabIDs: {},
 
-    miniHelp:
-    '<span style="font-weight: bold;">Zhongzhong Chinese-English Dictionary&nbsp;&nbsp;&nbsp;</span><br><br>' +
+    buildMiniHelp: function() {
+    return '<span style="font-weight: bold;">Zhongzhong Chinese-English Dictionary&nbsp;&nbsp;&nbsp;</span><br><br>' +
     '<p>' +
     '<span style="font-style: italic;">In order to make Zhongzhong work in input fields and text areas,<br>' +
     ' hold down the Alt-key on your keyboard.</span><br><br>' +
@@ -65,7 +65,7 @@ var zhongwenMain = {
     'Keyboard actions:' +
     '<p>' +
     '<table style="margin: 20px;" cellspacing=5 cellpadding=5>' +
-    '<tr><td><b>Alt + ' + localStorage['enableKey'] + '&nbsp;:</b></td><td style="font-weight: bold;">&nbsp;Enable/Disable Zhongzhong</td></tr>' +
+    '<tr><td><b>Alt + ' + zhongwenMain.config.enableKey + '&nbsp;:</b></td><td style="font-weight: bold;">&nbsp;Enable/Disable Zhongzhong</td></tr>' +
     '<tr><td><b>&nbsp;</b></td><td>&nbsp;</td></tr>' +
     '<tr><td><b>N&nbsp;:</b></td><td>&nbsp;Next word</td></tr>' +
     '<tr><td><b>B&nbsp;:</b></td><td>&nbsp;Previous character</td></tr>' +
@@ -107,7 +107,8 @@ var zhongwenMain = {
     '<tr><td><b>Alt + 8&nbsp;:</b></td><td>&nbsp;Baidu Baike</td></tr>' +
     '<tr><td><b>T&nbsp;:</b></td><td>&nbsp;Tatoeba</td></tr>' +
     '<tr><td><b>K&nbsp;:</b></td><td style="font-weight: bold;">&nbsp;Study character in Koohii.com (NEW)</td></tr>' +
-    '</table>',
+    '</table>';
+    },
 
     loadDictionary: function() {
         if (!this.dict) {
@@ -121,18 +122,21 @@ var zhongwenMain = {
     // Just sends a message to the tab to enable itself if it hasn't
     // already.
     onTabSelect: function(tabId) {
-        zhongwenMain._onTabSelect(tabId);
+        zhongwenMain.ready.then(() => zhongwenMain._onTabSelect(tabId));
     },
     _onTabSelect: function(tabId) {
         if ((this.enabled == 1))
-            chrome.tabs.sendRequest(tabId, {
+            // Fails harmlessly for tabs with no content script (chrome://
+            // pages, the New Tab Page, etc.) - same as the old MV2
+            // sendRequest's unchecked runtime.lastError.
+            chrome.tabs.sendMessage(tabId, {
                 "type":"enable",
                 "config":zhongwenMain.config
-            });
+            }).catch(() => {});
     },
 
     enable: function(tab) {
-        localStorage['enabled'] = 1;
+        chrome.storage.local.set({enabled: 1});
 
         if (!this.dict) {
             this.loadDictionary()
@@ -140,80 +144,53 @@ var zhongwenMain = {
                 this.chromeSetup(tab);
             })
             .catch(err => {
-                alert('Error loading dictionary: ' + err);
+                console.error('Error loading dictionary: ' + err);
             });
         }
     },
 
     chromeSetup: function(tab) {
         // Send message to current tab to add listeners and create stuff
-        chrome.tabs.sendRequest(tab.id, {
+        chrome.tabs.sendMessage(tab.id, {
             "type": "enable",
             "config": zhongwenMain.config
-        });
+        }).catch(() => {});
         zhongwenMain.enabled = 1;
 
-        chrome.tabs.sendRequest(tab.id, {
+        chrome.tabs.sendMessage(tab.id, {
             "type": "showPopup",
-            "text": zhongwenMain.miniHelp,
+            "text": zhongwenMain.buildMiniHelp(),
             "isHelp": true
-        });
+        }).catch(() => {});
 
-        chrome.browserAction.setBadgeBackgroundColor({
+        chrome.action.setBadgeBackgroundColor({
             "color": [255, 0, 0, 255]
         });
 
-        chrome.browserAction.setBadgeText({
+        chrome.action.setBadgeText({
             "text": "On"
         });
 
         chrome.contextMenus.create(
         {
+            id: "openWordList",
             title: "Open word list",
-            onclick: function() {
-                var url = chrome.extension.getURL("/wordlist.html");
-                var tabID = zhongwenMain.tabIDs['wordlist'];
-                if (tabID) {
-                    chrome.tabs.get(tabID, function(tab) {
-                        if (tab && (tab.url.substr(-13) == 'wordlist.html')) {
-                            chrome.tabs.reload(tabID);
-                            chrome.tabs.update(tabID, {
-                                active: true
-                            });
-                        } else {
-                            chrome.tabs.create({
-                                url: url
-                            }, function(tab) {
-                                zhongwenMain.tabIDs['wordlist'] = tab.id;
-                                chrome.tabs.reload(tab.id);
-                            });
-                        }
-                    });
-                } else {
-                    chrome.tabs.create({
-                        url: url
-                    }, function(tab) {
-                        zhongwenMain.tabIDs['wordlist'] = tab.id;
-                        chrome.tabs.reload(tab.id);
-                    });
-                }
-            },
             contexts: ['all']
         });
     },
 
     disable: function(tab) {
 
-        localStorage['enabled'] = 0;
+        chrome.storage.local.set({enabled: 0});
 
         // Delete dictionary object after we implement it
         delete this.dict;
 
         zhongwenMain.enabled = 0;
-        chrome.browserAction.setBadgeBackgroundColor({
+        chrome.action.setBadgeBackgroundColor({
             "color": [0,0,0,0]
         });
-        chrome.browserAction.setBadgeText({
+        chrome.action.setBadgeText({
             "text": ""
         });
 
@@ -225,9 +202,9 @@ var zhongwenMain = {
             for (var i =0; i < windows.length; ++i) {
                 var tabs = windows[i].tabs;
                 for ( var j = 0; j < tabs.length; ++j) {
-                    chrome.tabs.sendRequest(tabs[j].id, {
+                    chrome.tabs.sendMessage(tabs[j].id, {
                         "type":"disable"
-                    });
+                    }).catch(() => {});
                 }
             }
         });
@@ -236,11 +213,13 @@ var zhongwenMain = {
     },
 
     enableToggle: function(tab) {
-        if (zhongwenMain.enabled) {
-            zhongwenMain.disable(tab);
-        } else {
-            zhongwenMain.enable(tab);
-        }
+        zhongwenMain.ready.then(() => {
+            if (zhongwenMain.enabled) {
+                zhongwenMain.disable(tab);
+            } else {
+                zhongwenMain.enable(tab);
+            }
+        });
     },
 
     search: function(text, dict) {
@@ -290,3 +269,113 @@ var zhongwenMain = {
 
     }
 };
+
+// The context menu item is created fresh on every enable() (and removed on
+// disable()), but the click listener has to be registered once, up front,
+// since chrome.contextMenus.create()'s old onclick-callback form isn't
+// reliable across service worker restarts.
+chrome.contextMenus.onClicked.addListener(function(info) {
+    if (info.menuItemId !== 'openWordList') return;
+
+    var url = chrome.runtime.getURL("/wordlist.html");
+    var tabID = zhongwenMain.tabIDs['wordlist'];
+    if (tabID) {
+        chrome.tabs.get(tabID, function(tab) {
+            if (tab && (tab.url.substr(-13) == 'wordlist.html')) {
+                chrome.tabs.reload(tabID);
+                chrome.tabs.update(tabID, {
+                    active: true
+                });
+            } else {
+                chrome.tabs.create({
+                    url: url
+                }, function(tab) {
+                    zhongwenMain.tabIDs['wordlist'] = tab.id;
+                    chrome.tabs.reload(tab.id);
+                });
+            }
+        });
+    } else {
+        chrome.tabs.create({
+            url: url
+        }, function(tab) {
+            zhongwenMain.tabIDs['wordlist'] = tab.id;
+            chrome.tabs.reload(tab.id);
+        });
+    }
+});
+
+// Config field name -> chrome.storage.local key, mirroring the mapping done
+// below when zhongwenMain.config is first built from storage.
+var configFieldToStorageKey = {
+    css: 'popupcolor',
+    tonecolors: 'tonecolors',
+    fontSize: 'fontSize',
+    font: 'font',
+    skritterTLD: 'skritterTLD',
+    chars: 'chars',
+    dicts: 'dicts',
+    zhuyin: 'zhuyin',
+    pinyin: 'pinyin',
+    definitions: 'definitions',
+    grammar: 'grammar',
+    voice: 'voice',
+    shortcuts: 'shortcuts',
+    shortcutsLookup: 'shortcutsLookup',
+    enableKey: 'enableKey'
+};
+var storageKeyToConfigField = {};
+for (var configField in configFieldToStorageKey) {
+    storageKeyToConfigField[configFieldToStorageKey[configField]] = configField;
+}
+
+zhongwenMain.config = {};
+
+// Populates zhongwenMain.config from chrome.storage.local and, if the
+// extension was left enabled, reloads the dictionary. The service worker is
+// non-persistent and re-runs this top-level code on every wake, so every
+// entry point below awaits this promise before touching config/enabled/dict.
+zhongwenMain.ready = chrome.storage.local.get(zhongwenDefaults).then(function(stored) {
+    zhongwenMain.config.css = stored.popupcolor;
+    zhongwenMain.config.tonecolors = stored.tonecolors;
+    zhongwenMain.config.fontSize = stored.fontSize;
+    zhongwenMain.config.font = stored.font;
+    zhongwenMain.config.skritterTLD = stored.skritterTLD;
+    zhongwenMain.config.chars = stored.chars;
+    zhongwenMain.config.dicts = stored.dicts;
+    zhongwenMain.config.zhuyin = stored.zhuyin;
+    zhongwenMain.config.pinyin = stored.pinyin;
+    zhongwenMain.config.definitions = stored.definitions;
+    zhongwenMain.config.grammar = stored.grammar;
+    zhongwenMain.config.voice = stored.voice;
+    zhongwenMain.config.tones = [stored.tone1,
+                                  stored.tone2,
+                                  stored.tone3,
+                                  stored.tone4,
+                                  stored.tone5];
+    zhongwenMain.config.shortcuts = stored.shortcuts;
+    zhongwenMain.config.shortcutsLookup = stored.shortcutsLookup;
+    zhongwenMain.config.enableKey = stored.enableKey;
+
+    if (stored.enabled == 1) {
+        return zhongwenMain.loadDictionary().then(function() {
+            zhongwenMain.enabled = 1;
+        });
+    }
+});
+
+// Keeps the in-memory config current when options.html writes new values to
+// chrome.storage.local (it can no longer reach into this service worker via
+// chrome.extension.getBackgroundPage()).
+chrome.storage.onChanged.addListener(function(changes, areaName) {
+    if (areaName !== 'local') return;
+
+    for (var key in changes) {
+        var toneMatch = /^tone([1-5])$/.exec(key);
+        if (toneMatch && zhongwenMain.config.tones) {
+            zhongwenMain.config.tones[Number(toneMatch[1]) - 1] = changes[key].newValue;
+        } else if (storageKeyToConfigField[key]) {
+            zhongwenMain.config[storageKeyToConfigField[key]] = changes[key].newValue;
+        }
+    }
+});

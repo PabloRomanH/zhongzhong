@@ -4,157 +4,115 @@
         https://chrome.google.com/webstore/detail/dggcgdjndddfmcfoipccicfoajmciacf
 */
 
-function loadVals() {
-    var storedValue = localStorage['popupcolor'];
+function loadVals(stored) {
     for (var i = 0; i < document.optform.popupcolor.length; i++) {
-        if(document.optform.popupcolor[i].value == storedValue) {
+        if(document.optform.popupcolor[i].value == stored.popupcolor) {
             document.optform.popupcolor[i].selected = true;
             break;
         }
     }
 
-    document.optform.tonecolors.checked = localStorage['tonecolors'] == 'yes';
+    document.optform.tonecolors.checked = stored.tonecolors == 'yes';
 
-    document.optform.tone1.value = localStorage['tone1'] || "#F00";
+    document.optform.tone1.value = stored.tone1;
     document.optform.tone1.style.color = document.optform.tone1.value;
-    document.optform.tone2.value = localStorage['tone2'] || "#F80";
+    document.optform.tone2.value = stored.tone2;
     document.optform.tone2.style.color = document.optform.tone2.value;
-    document.optform.tone3.value = localStorage['tone3'] || "#0F0";
+    document.optform.tone3.value = stored.tone3;
     document.optform.tone3.style.color = document.optform.tone3.value;
-    document.optform.tone4.value = localStorage['tone4'] || "#00F";
+    document.optform.tone4.value = stored.tone4;
     document.optform.tone4.style.color = document.optform.tone4.value;
-    document.optform.tone5.value = localStorage['tone5'] || "#A0A0A0";
+    document.optform.tone5.value = stored.tone5;
     document.optform.tone5.style.color = document.optform.tone5.value;
 
-    storedValue = localStorage['fontSize'];
-    if(storedValue == 'small') {
+    if(stored.fontSize == 'small') {
         document.optform.fontSize[1].selected = true;
     }
     else {
         document.optform.fontSize[0].selected = true;
     }
 
-    storedValue = localStorage['font'];
-    if(storedValue == 'sans') {
+    if(stored.font == 'sans') {
         document.optform.font[0].selected = true;
     }
-    else if(storedValue == 'serif') {
+    else if(stored.font == 'serif') {
         document.optform.font[1].selected = true;
     }
     else { // == 'handdrawn'
         document.optform.font[2].selected = true;
     }
 
-    storedValue = localStorage['skritterTLD'];
-    if(storedValue == 'cn') {
+    if(stored.skritterTLD == 'cn') {
         document.optform.skritterTLD[1].selected = true;
     }
-    else if(storedValue == 'disabled') {
+    else if(stored.skritterTLD == 'disabled') {
         document.optform.skritterTLD[2].selected = true;
     }
     else {
         document.optform.skritterTLD[0].selected = true;
     }
 
-    storedValue = localStorage['chars'];
-    if(storedValue == 'both') {
+    if(stored.chars == 'both') {
         document.optform.chars[0].selected = true;
     }
-    else if(storedValue == 'traditional') {
+    else if(stored.chars == 'traditional') {
         document.optform.chars[1].selected = true;
     }
     else {
         document.optform.chars[2].selected = true;
     }
 
-    storedValue = localStorage['dicts'];
-    if(storedValue == 'engHan') {
+    if(stored.dicts == 'engHan') {
         document.optform.dicts[0].selected = true;
     }
-    else if(storedValue == 'hanEng') {
+    else if(stored.dicts == 'hanEng') {
         document.optform.dicts[1].selected = true;
     }
 
-    document.optform.zhuyin.checked = localStorage['zhuyin'] == 'yes';
+    document.optform.zhuyin.checked = stored.zhuyin == 'yes';
 
-    document.optform.pinyin.checked = localStorage['pinyin'] == 'yes';
+    document.optform.pinyin.checked = stored.pinyin == 'yes';
 
-    document.optform.definitions.checked = localStorage['definitions'] == 'yes';
+    document.optform.definitions.checked = stored.definitions == 'yes';
 
-    document.optform.grammar.checked = localStorage['grammar'] == 'yes';
+    document.optform.grammar.checked = stored.grammar == 'yes';
 
-    storedValue = localStorage['voice'];
-    if(storedValue == 'zh-CN') {
+    if(stored.voice == 'zh-CN') {
         document.optform.voice[0].selected = true;
     }
     else { // == 'taiwan'
         document.optform.voice[1].selected = true;
     }
 
-    document.optform.shortcuts.checked = localStorage['shortcuts'] == 'yes';
-    document.optform.shortcutsLookup.checked = localStorage['shortcutsLookup'] == 'yes';
+    document.optform.shortcuts.checked = stored.shortcuts == 'yes';
+    document.optform.shortcutsLookup.checked = stored.shortcutsLookup == 'yes';
 
-    document.optform.enableKey.value = localStorage['enableKey'] || 'Z';
-    console.log(document.optform.enableKey.value, localStorage['enableKey'] || 'Z')
+    document.optform.enableKey.value = stored.enableKey;
 }
 
 function storeVals() {
-    localStorage['popupcolor'] = document.optform.popupcolor.value;
-    chrome.extension.getBackgroundPage().zhongwenMain.config.css = localStorage['popupcolor'];
-
-    localStorage['tonecolors'] = document.optform.tonecolors.checked ? 'yes' : 'no';
-    chrome.extension.getBackgroundPage().zhongwenMain.config.tonecolors = localStorage['tonecolors'];
-
-    localStorage['tone1'] = document.optform.tone1.value;
-    localStorage['tone2'] = document.optform.tone2.value;
-    localStorage['tone3'] = document.optform.tone3.value;
-    localStorage['tone4'] = document.optform.tone4.value;
-    localStorage['tone5'] = document.optform.tone5.value;
-    chrome.extension.getBackgroundPage().zhongwenMain.config.tones = [localStorage['tone1'],
-                                                                      localStorage['tone2'],
-                                                                      localStorage['tone3'],
-                                                                      localStorage['tone4'],
-                                                                      localStorage['tone5']];
-
-    localStorage['fontSize'] = document.optform.fontSize.value;
-    chrome.extension.getBackgroundPage().zhongwenMain.config.fontSize = localStorage['fontSize'];
-
-    localStorage['font'] = document.optform.font.value;
-    chrome.extension.getBackgroundPage().zhongwenMain.config.font = localStorage['font'];
-
-    localStorage['skritterTLD'] = document.optform.skritterTLD.value;
-    chrome.extension.getBackgroundPage().zhongwenMain.config.skritterTLD = localStorage['skritterTLD'];
-
-    localStorage['chars'] = document.optform.chars.value;
-    chrome.extension.getBackgroundPage().zhongwenMain.config.chars = localStorage['chars'];
-
-    localStorage['dicts'] = document.optform.dicts.value;
-    chrome.extension.getBackgroundPage().zhongwenMain.config.dicts = localStorage['dicts'];
-
-    localStorage['zhuyin'] = document.optform.zhuyin.checked ? 'yes' : 'no';
-    chrome.extension.getBackgroundPage().zhongwenMain.config.zhuyin = localStorage['zhuyin'];
-
-    localStorage['pinyin'] = document.optform.pinyin.checked ? 'yes' : 'no';
-    chrome.extension.getBackgroundPage().zhongwenMain.config.pinyin = localStorage['pinyin'];
-
-    localStorage['definitions'] = document.optform.definitions.checked ? 'yes' : 'no';
-    chrome.extension.getBackgroundPage().zhongwenMain.config.definitions = localStorage['definitions'];
-
-    localStorage['grammar'] = document.optform.grammar.checked ? 'yes' : 'no';
-    chrome.extension.getBackgroundPage().zhongwenMain.config.grammar = localStorage['grammar'];
-
-    localStorage['voice'] = document.optform.voice.value;
-    chrome.extension.getBackgroundPage().zhongwenMain.config.voice = localStorage['voice'];
-
-    localStorage['shortcuts'] = document.optform.shortcuts.checked ? 'yes' : 'no';
-    chrome.extension.getBackgroundPage().zhongwenMain.config.shortcuts = localStorage['shortcuts'];
-
-    localStorage['shortcutsLookup'] = document.optform.shortcutsLookup.checked ? 'yes' : 'no';
-    chrome.extension.getBackgroundPage().zhongwenMain.config.shortcutsLookup = localStorage['shortcutsLookup'];
-
-    localStorage['enableKey'] = document.optform.enableKey.value.toUpperCase();
-    console.log(document.optform.enableKey.value.toUpperCase());
-    chrome.extension.getBackgroundPage().zhongwenMain.config.enableKey = localStorage['enableKey'];
+    chrome.storage.local.set({
+        popupcolor: document.optform.popupcolor.value,
+        tonecolors: document.optform.tonecolors.checked ? 'yes' : 'no',
+        tone1: document.optform.tone1.value,
+        tone2: document.optform.tone2.value,
+        tone3: document.optform.tone3.value,
+        tone4: document.optform.tone4.value,
+        tone5: document.optform.tone5.value,
+        fontSize: document.optform.fontSize.value,
+        font: document.optform.font.value,
+        skritterTLD: document.optform.skritterTLD.value,
+        chars: document.optform.chars.value,
+        dicts: document.optform.dicts.value,
+        zhuyin: document.optform.zhuyin.checked ? 'yes' : 'no',
+        pinyin: document.optform.pinyin.checked ? 'yes' : 'no',
+        definitions: document.optform.definitions.checked ? 'yes' : 'no',
+        grammar: document.optform.grammar.checked ? 'yes' : 'no',
+        voice: document.optform.voice.value,
+        shortcuts: document.optform.shortcuts.checked ? 'yes' : 'no',
+        shortcutsLookup: document.optform.shortcutsLookup.checked ? 'yes' : 'no',
+        enableKey: document.optform.enableKey.value.toUpperCase()
+    });
 }
 
 $(function() {
@@ -165,16 +123,17 @@ $(function() {
     $('.tone-color').blur(setTextColorToValue);
 
     $('#resettonecolors').click(function(event) {
-      localStorage['tone1'] = document.optform.tone1.value = '#F00';
+      document.optform.tone1.value = zhongwenDefaults.tone1;
       document.optform.tone1.style.color = document.optform.tone1.value;
-      localStorage['tone2'] = document.optform.tone2.value = '#F80';
+      document.optform.tone2.value = zhongwenDefaults.tone2;
       document.optform.tone2.style.color = document.optform.tone2.value;
-      localStorage['tone3'] = document.optform.tone3.value = '#0F0';
+      document.optform.tone3.value = zhongwenDefaults.tone3;
       document.optform.tone3.style.color = document.optform.tone3.value;
-      localStorage['tone4'] = document.optform.tone4.value = '#00F';
+      document.optform.tone4.value = zhongwenDefaults.tone4;
       document.optform.tone4.style.color = document.optform.tone4.value;
-      localStorage['tone5'] = document.optform.tone5.value = '#A0A0A0';
+      document.optform.tone5.value = zhongwenDefaults.tone5;
       document.optform.tone5.style.color = document.optform.tone5.value;
+      storeVals();
     });
 });
 
@@ -182,5 +141,6 @@ function setTextColorToValue(event) {
   event.target.style.color = event.target.value;
 }
 
-
-window.onload = loadVals;
+window.onload = function() {
+    chrome.storage.local.get(zhongwenDefaults).then(loadVals);
+};

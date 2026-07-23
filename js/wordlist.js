@@ -4,16 +4,12 @@
         https://chrome.google.com/webstore/detail/dggcgdjndddfmcfoipccicfoajmciacf
 */
 
-var wlstring = localStorage['wordlist'];
-
 var entries;
-if (wlstring) {
-    entries = JSON.parse(wlstring);
-} else {
-    entries = [];
-}
 
 $(function() {
+chrome.storage.local.get({wordlist: []}).then(function(stored) {
+
+entries = stored.wordlist;
 
     $('#words').jqGrid({
         data: entries,
@@ -105,9 +101,9 @@ $('#delete').click(function(e) {
         }
     }
 
-    localStorage['wordlist'] = JSON.stringify(toKeep);
-
-    location.reload(true);
+    chrome.storage.local.set({wordlist: toKeep}).then(function() {
+        location.reload(true);
+    });
 });
 
 $('#help').click(function(e) {
@@ -134,4 +130,5 @@ if (entries.length > 0) {
     $('#help').hide();
 }
 
+});
 });

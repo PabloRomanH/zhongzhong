@@ -4,10 +4,23 @@
         https://chrome.google.com/webstore/detail/dggcgdjndddfmcfoipccicfoajmciacf
 */
 
-chrome.browserAction.onClicked.addListener(zhongwenMain.enableToggle);
-chrome.tabs.onActiveChanged.addListener(zhongwenMain.onTabSelect);
+importScripts('js/defaults.js', 'dict.js', 'main.js');
 
-chrome.extension.onRequest.addListener(function(request, sender, response) {
+chrome.action.onClicked.addListener(zhongwenMain.enableToggle);
+chrome.tabs.onActivated.addListener(function(activeInfo) {
+    zhongwenMain.onTabSelect(activeInfo.tabId);
+});
+
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+    handleMessage(request, sender, sendResponse);
+    // Keep the message channel open: handleMessage awaits
+    // zhongwenMain.ready and chrome.storage before it can respond.
+    return true;
+});
+
+async function handleMessage(request, sender, sendResponse) {
+    await zhongwenMain.ready;
+
     switch(request.type) {
         case 'enable':
             zhongwenMain.enableToggle(sender.tab);
@@ -21,7 +34,7 @@ chrome.extension.onRequest.addListener(function(request, sender, response) {
             break;
         case 'search':
             var e = zhongwenMain.search(request.text, request.dict);
-            response(e);
+            sendResponse(e);
             break;
         case 'open':
             var tabID = zhongwenMain.tabIDs[request.tabType];
@@ -56,25 +69,9 @@ chrome.extension.onRequest.addListener(function(request, sender, response) {
                 });
             }
             break;
-        case 'copy':
-            var txt = document.createElement('textarea');
-            txt.style.position = "absolute";
-            txt.style.left = "-100%";
-            txt.value = request.data;
-            document.body.appendChild(txt);
-            txt.select();
-            document.execCommand('copy');
-            document.body.removeChild(txt);
-            break;
         case 'add':
-            var json = localStorage['wordlist'];
-
-            var wordlist;
-            if (json) {
-                wordlist = JSON.parse(json);
-            } else {
-                wordlist = []
-            }
+            var stored = await chrome.storage.local.get({wordlist: []});
+            var wordlist = stored.wordlist;
 
             for (var i in request.entries) {
 
@@ -86,7 +83,7 @@ chrome.extension.onRequest.addListener(function(request, sender, response) {
 
                 wordlist.push(entry);
             }
-            localStorage['wordlist'] = JSON.stringify(wordlist);
+            await chrome.storage.local.set({wordlist: wordlist});
 
             var tabID = zhongwenMain.tabIDs['wordlist'];
             if (tabID) {
@@ -98,23 +95,26 @@ chrome.extension.onRequest.addListener(function(request, sender, response) {
             }
             break;
         case 'iframe':
-            chrome.tabs.executeScript(sender.tab.id, {
-                file: 'content.js',
-                allFrames: true
-            })
+            chrome.scripting.executeScript({
+                target: {
+                    tabId: sender.tab.id,
+                    allFrames: true
+                },
+                files: ['content.js']
+            });
             break;
         case 'toggle':
             if(request.field == 'zhuyin') {
-                localStorage.zhuyin = localStorage.zhuyin == 'yes' ? 'no' : 'yes';
-                zhongwenMain.config.zhuyin = localStorage.zhuyin;
+                zhongwenMain.config.zhuyin = zhongwenMain.config.zhuyin == 'yes' ? 'no' : 'yes';
+                await chrome.storage.local.set({zhuyin: zhongwenMain.config.zhuyin});
             }
             else if(request.field == 'pinyin') {
-                localStorage.pinyin = localStorage.pinyin == 'yes' ? 'no' : 'yes';
-                zhongwenMain.config.pinyin = localStorage.pinyin;
+                zhongwenMain.config.pinyin = zhongwenMain.config.pinyin == 'yes' ? 'no' : 'yes';
+                await chrome.storage.local.set({pinyin: zhongwenMain.config.pinyin});
             }
             else if(request.field == 'definitions') {
-                localStorage.definitions = localStorage.definitions == 'yes' ? 'no' : 'yes';
-                zhongwenMain.config.definitions = localStorage.definitions;
+                zhongwenMain.config.definitions = zhongwenMain.config.definitions == 'yes' ? 'no' : 'yes';
+                await chrome.storage.local.set({definitions: zhongwenMain.config.definitions});
             }
             break;
         case 'speak':
@@ -123,65 +123,4 @@ chrome.extension.onRequest.addListener(function(request, sender, response) {
         default:
     // ignore
     }
-});
-
-function initStorage(key, defaultValue) {
-    var currentValue = localStorage[key];
-    if (!currentValue) {
-        localStorage[key] = defaultValue;
-    }
-}
-
-initStorage("popupcolor", "white");
-initStorage("tonecolors", "yes");
-initStorage("fontSize", "small");
-initStorage("font", "sans");
-initStorage("skritterTLD", "com");
-initStorage("chars", "both");
-initStorage("dicts", "engHan");
-initStorage("zhuyin", "no");
-initStorage("pinyin", "yes");
-initStorage("definitions", "yes");
-initStorage("grammar", "yes");
-initStorage("voice", "zh-CN");
-initStorage("tone1", "#F00");
-initStorage("tone2", "#F80");
-initStorage("tone3", "#0F0");
-initStorage("tone4", "#00F");
-initStorage("tone5", "#A0A0A0");
-initStorage("shortcuts", "no");
-initStorage("shortcutsLookup", "yes");
-initStorage("enableKey", "Z");
-
-
-zhongwenMain.config = {};
-zhongwenMain.config.css = localStorage.popupcolor;
-zhongwenMain.config.tonecolors = localStorage.tonecolors;
-zhongwenMain.config.fontSize = localStorage.fontSize;
-zhongwenMain.config.font = localStorage.font;
-zhongwenMain.config.skritterTLD = localStorage.skritterTLD;
-zhongwenMain.config.chars = localStorage.chars;
-zhongwenMain.config.dicts = localStorage.dicts;
-zhongwenMain.config.zhuyin = localStorage.zhuyin;
-zhongwenMain.config.pinyin = localStorage.pinyin;
-zhongwenMain.config.definitions = localStorage.definitions;
-zhongwenMain.config.grammar = localStorage.grammar;
-zhongwenMain.config.voice = localStorage.voice;
-zhongwenMain.config.tones = [localStorage.tone1,
-                             localStorage.tone2,
-                             localStorage.tone3,
-                             localStorage.tone4,
-                             localStorage.tone5];
-zhongwenMain.config.shortcuts = localStorage.shortcuts;
-zhongwenMain.config.shortcutsLookup = localStorage.shortcutsLookup;
-zhongwenMain.config.enableKey = localStorage.enableKey;
-
-
-if (localStorage['enabled'] == 1) {
-    zhongwenMain.loadDictionary()
-    .then(() => {
-      zhongwenMain.enabled = 1;
-    });
-} else {
-    zhongwenMain.enabled = 0;
 }
