@@ -21,7 +21,7 @@ test suite — this is plain, unbundled JavaScript loaded directly by the Chrome
   cd data
   wget https://www.mdbg.net/chinese/export/cedict/cedict_1_0_ts_utf-8_mdbg.zip
   unzip cedict_1_0_ts_utf-8_mdbg.zip
-  python index.py
+  python3 index.py
   ```
   `index.py` reads `cedict_ts.u8` and regenerates `cedict.idx`, the sorted binary-search index
   keyed by simplified/traditional headword mapping to byte offsets in the dictionary file.
@@ -70,5 +70,6 @@ the `popupcolor` config value and injected by the content script.
 
 - Keep copyright headers/links in modified files — the license header in `main.js`/`dict.js`
   explicitly asks that they not be changed or removed (GPL v2, see `GPL_2.0.txt`).
-- `data/index.py` is Python 2 style (`str.decode('utf-8')`); run it with `python2` if `python`
-  resolves to Python 3 on your system.
+- `data/index.py` requires Python 3. The offsets it writes into `cedict.idx` are character (not
+  byte) counts, matching how `dict.js` indexes into the dictionary text as a JS string — don't
+  reintroduce byte-based length calculations when touching it.

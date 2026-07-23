@@ -10,7 +10,7 @@ To install it go to:
 
 ## Build instructions
 
-Prerequisites: Python
+Prerequisites: Python 3
 
 To update the dicitonary first clone this repo and change to the data directory
 
@@ -29,7 +29,7 @@ unzip cedict_1_0_ts_utf-8_mdbg.zip
 Run the script `index.py`
 
 ```shell
-python index.py
+python3 index.py
 ```
 
 Test is by loading unpacked in Chrome.

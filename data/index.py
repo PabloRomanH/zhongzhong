@@ -1,13 +1,20 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 
-def utf8len(s):
-    return len(s.decode('utf-8'))
+# Offsets stored in cedict.idx must match JS string index positions, since
+# dict.js indexes into cedict_ts.u8 as a JS string decoded from UTF-8 by
+# fetch().text(). JS strings are UTF-16, so characters outside the Basic
+# Multilingual Plane (rare CJK Ext. B+ characters, codepoint > 0xFFFF) count
+# as 2 units (a surrogate pair), not 1 - Python's len() counts codepoints,
+# which undercounts those. Counting UTF-16 code units directly avoids that
+# mismatch.
+def entrylen(s):
+    return len(s.encode('utf-16-le')) // 2
 
-cedict = open('cedict_ts.u8')
+cedict = open('cedict_ts.u8', encoding='utf-8', newline='')
 
 line = cedict.readline()
 
-byte = 0
+offset = 0
 
 dictionary = {}
 
@@ -17,7 +24,7 @@ def saveToDict(key, value):
 
 while line:
     while line[0] == '#':
-        byte += utf8len(line)
+        offset += entrylen(line)
         line = cedict.readline()
 
     spacepos = line.find(' ')
@@ -25,12 +32,12 @@ while line:
     spacepos2 = line.find(' ', spacepos + 1)
     secondentry = line[spacepos + 1: spacepos2]
     if firstentry == secondentry:
-        saveToDict(firstentry, byte)
+        saveToDict(firstentry, offset)
     else:
-        saveToDict(firstentry, byte)
-        saveToDict(secondentry, byte)
+        saveToDict(firstentry, offset)
+        saveToDict(secondentry, offset)
 
-    byte += utf8len(line)
+    offset += entrylen(line)
     line = cedict.readline()
 
 cedict.close()
@@ -47,7 +54,7 @@ for key in dictionary:
 
 outputlist.sort()
 
-index = open('cedict.idx', 'w')
+index = open('cedict.idx', 'w', encoding='utf-8', newline='')
 index.writelines(outputlist)
 
 index.close()
